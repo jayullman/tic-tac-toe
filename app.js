@@ -1,8 +1,19 @@
+/** NOTES
+
+    posibly make updateBoard() into a method of board?
+
+  */
+
+
 /** determines if it is the players turn
   * true: human player's turn
   * false: AI's turn
   */
 var isPlayersTurn = true;
+
+// determines the markers for player and ai, player should determine
+var playerMarker = 'x';
+var AIMarker = '0';
 
 /** Create board
   * An array of objects
@@ -85,41 +96,36 @@ var board = [
   }
 ];
 
-/** creates rows, cols, diags
+/** create rows, cols, diags
   *
   * organizes board into:
   *   rows, lines, diagonals for easier analysis
   *   would only contain player markers
-  *
-  * takes board as argument
-  * returns lines{}
   */
-function createLines(b) {
-  // b is current board passed in as paramater
+
   var lines = {
 
     rows: [
-      [b[0], b[1], b[2]],
-      [b[3], b[4], b[5]],
-      [b[6], b[7], b[8]]
+      [board[0], board[1], board[2]],
+      [board[3], board[4], board[5]],
+      [board[6], board[7], board[8]]
     ],
 
     cols: [
-      [b[0], b[3], b[6]],
-      [b[1], b[4], b[7]],
-      [b[2], b[5], b[8]]
+      [board[0], board[3], board[6]],
+      [board[1], board[4], board[7]],
+      [board[2], board[5], board[8]]
     ],
 
     // TODO: figure out how to handle the center square, it occupies both diags
     diags: [
-      [b[0], b[4], b[8]],
-      [b[2], b[4], b[6]],
+      [board[0], board[4], board[8]],
+      [board[2], board[4], board[6]],
       // ???
       []
     ]
   };
-  return lines;
-}
+
 
 // switch which player is the current player
 function togglePlayer() {
@@ -137,8 +143,37 @@ function togglePlayer() {
   * accepts number as argument, indicating the space on the board
   */
 function updateBoard(space) {
+
     // update the space with the appropriate marker, determined by who is
     // the current player
+
+    // determines what the current marker is, 'x' or 'o', depending on
+    // whose turn it is
+    var currentMarker = isPlayersTurn ? playerMarker : AIMarker;
+
+    board[space].marker = currentMarker;
+
+    var rowNum =  board[space].row,
+        colNumb = board[space].col,
+        diagNum = board[space].diag;
+
+
+    // if (rowNum !== null) {
+    //   if (space > 2) {
+    //     placeInLine -= 3;
+    //   }
+    //   if (space > 5) {
+    //     placeInLine -= 3;
+    //   }
+    //
+    //   rows[rowNum][placeInLine];
+    // }
+
+}
+
+// TODO: continue working on updateLine function
+function updateLine(space, line) {
+  var lineNum = ;
 
 
 }
