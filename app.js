@@ -145,20 +145,31 @@ function togglePlayer() {
     }
 }
 
+// this function will act as the game's controller
 function gameTurn() {
   /** function outline
 
-    1. get player/ai input
-    2. update board
-    3. check for win
+  WHILE (victory == false):
+
+    1. If player's turn
+      - ask player to make move
+
+
+    2. If AI's move
+      - inform player that the AI is making a move
+      - have AI select the next best move
+
+    3. get player/ai input
+    4. update board
+    5. check for win
       a. if win:
         - highlight winning rows, cols, diags
         - if game won: notify play
 
       b. no win:
         - toggle to next player
-        - if player's turn:
-            -inform player to go
+
+   END WHILE
   */
 
 }
