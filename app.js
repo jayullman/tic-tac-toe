@@ -13,17 +13,17 @@ var isPlayersTurn = true;
 
 // determines the markers for player and ai, player should determine
 var playerMarker = 'x';
-var AIMarker = '0';
+var AIMarker = 'o';
 
 /** Create board
   * An array of objects
   * boardLoc: corresponds to the square on the boardLoc
   * row: indicates which row the space belongs to
   * col: indicates which col the space belongs to
-  * diag: indicates which diagonal the space belongs to
-  *       0: top left to bottom right
-  *       1: top right to bottom left
-  *       2: center, belongs to both diagonals
+  * diag1: bool indicating that space belongs to first diag
+  *   top left towards bottom right
+  * diag2:
+  *   top right towards bottom left
   * marker: indicates whether the player or ai controls the square
   */
 
@@ -35,63 +35,72 @@ var board = [
     boardLoc: 0,
     row: 0,
     col: 0,
-    diag, 0,
+    diag1: true,
+    diag2: false,
     marker: null
   },
   {
     boardLoc: 1,
     row: 0,
     col: 1,
-    diag: null,
+    diag1: false,
+    diag2: false,
     marker: null
-  }
+  },
   {
     boardLoc: 2,
     row: 0,
     col: 2,
-    diag: 1,
+    diag1: false,
+    diag2: true,
     marker: null
   },
   {
     boardLoc: 3,
     row: 1,
     col: 0,
-    diag: 0,
+    diag1: false,
+    diag2: false,
     marker: null
   },
   {
     boardLoc: 4,
     row: 1,
     col: 1,
-    diag: 2,
+    diag1: true,
+    diag2: true,
     marker: null
   },
   {
     boardLoc: 5,
     row: 1,
     col: 2,
-    diag: 0,
+    diag1: false,
+    diag2: false,
     marker: null
   },
   {
     boardLoc: 6,
     row: 2,
     col: 0,
-    diag: 1,
+    diag1: false,
+    diag2: true,
     marker: null
   },
   {
     boardLoc: 7,
     row: 2,
     col: 1,
-    diag: 0,
+    diag1: false,
+    diag2: false,
     marker: null
   },
   {
     boardLoc: 8,
     row: 2,
     col: 2,
-    diag: 0,
+    diag1: true,
+    diag2: false,
     marker: null
   }
 ];
@@ -154,26 +163,102 @@ function updateBoard(space) {
     board[space].marker = currentMarker;
 
     var rowNum =  board[space].row,
-        colNumb = board[space].col,
-        diagNum = board[space].diag;
+        colNum = board[space].col,
+        diag1 = board[space].diag1,
+        diag2 = board[space].diag2;
 
-
-    // if (rowNum !== null) {
-    //   if (space > 2) {
-    //     placeInLine -= 3;
-    //   }
-    //   if (space > 5) {
-    //     placeInLine -= 3;
-    //   }
-    //
-    //   rows[rowNum][placeInLine];
-    // }
-
+    // check for win
+    // check each affected line for win
+    if (checkForWin(lines.rows[rowNum], lines.cols[colNum], diag1, diag2).gameWon) {
+      console.log('win!');
+    }
 }
 
-// TODO: continue working on updateLine function
-function updateLine(space, line) {
-  var lineNum = ;
+function checkForWin(row, col, diag1, diag2) {
 
 
+  var rowMarkerArr = [],
+      colMarkerArr = [],
+      diag1MarkerArr = [],
+      diag2MarkerArr = [];
+
+  var victoryObject = {};
+  var currentMarker = isPlayersTurn ? playerMarker : AIMarker;
+
+  var checkElems = function(item) {
+    return item === currentMarker;
+  };
+
+  // create an array of markers for the passed in row
+  for (var i = 0; i < row.length; i++) {
+    rowMarkerArr.push(row[i].marker);
+  }
+
+  for (var i = 0; i < col.length; i++) {
+    colMarkerArr.push(col[i].marker);
+  }
+
+  // only create array of diags if the selection lies within a diagonal
+  if (diag1) {
+    for (var i = 0; i < lines.diags[0].length; i++) {
+      diag1MarkerArr.push(lines.diags[0][i].marker);
+    }
+    // check to see if diag1 is full, ie no null values present
+    if (diag1MarkerArr.indexOf(null) < 0) {
+      if (diag1MarkerArr.every(checkElems)) {
+        console.log('diag1 is full of the same marker!');
+        victoryObject.diag1 = true;
+      }
+    }
+
+  }
+
+  if (diag2) {
+    for (var i = 0; i < lines.diags[1].length; i++) {
+      diag2MarkerArr.push(lines.diags[1][i].marker);
+    }
+    // check to see if diag2 is full, ie no null values present
+    if (diag2MarkerArr.indexOf(null) < 0) {
+      if (diag2MarkerArr.every(checkElems)) {
+        console.log('diag2 is full of the same marker!');
+        victoryObject.diag2 = true;
+      }
+    }
+  }
+
+  // check to see if row is full, ie no null values present
+  if (rowMarkerArr.indexOf(null) < 0) {
+    if (rowMarkerArr.every(checkElems)) {
+      console.log('row is full of the same marker!');
+      victoryObject.row = true;
+    }
+  }
+
+  // check to see if col is full, ie no null values present
+  if (colMarkerArr.indexOf(null) < 0) {
+    if (colMarkerArr.every(checkElems)) {
+      console.log('col is full of the same marker!');
+      victoryObject.col = true;
+    }
+  }
+
+
+  // function will return an object if the last move resulted in a working
+  // will return undefined if no win is detected
+
+  // victory object will pass back an object
+  /*
+  var victoryObject = {
+    row: winning row
+    col: winning column
+    diag1: bool
+    diag2: bool
+  }
+  */
+  if (victoryObject.row || victoryObject.col ||
+      victoryObject.diag1 || victoryObject.diag2) {
+        victoryObject.gameWon = true;
+  }
+
+  return victoryObject
 }
