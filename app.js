@@ -145,6 +145,23 @@ function togglePlayer() {
     }
 }
 
+function gameTurn() {
+  /** function outline
+
+    1. get player/ai input
+    2. update board
+    3. check for win
+      a. if win:
+        - highlight winning rows, cols, diags
+        - if game won: notify play
+
+      b. no win:
+        - toggle to next player
+        - if player's turn:
+            -inform player to go
+  */
+
+}
 
 /** accepts placement
   * updates the board and all of the lines
@@ -167,6 +184,8 @@ function updateBoard(space) {
         diag1 = board[space].diag1,
         diag2 = board[space].diag2;
 
+
+    // TODO: move this to gameTurn()
     // check for win
     // check each affected line for win
     if (checkForWin(lines.rows[rowNum], lines.cols[colNum], diag1, diag2).gameWon) {
