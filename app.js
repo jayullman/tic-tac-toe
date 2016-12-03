@@ -4,7 +4,6 @@
 
   */
 
-
 /** determines if it is the players turn
   * true: human player's turn
   * false: AI's turn
@@ -123,30 +122,27 @@ var board = [
   *   would only contain player markers
   */
 
-  // create a constructor function that creates these lines using a
-  // passed-in board parameter
-  var lines = {
+  // this function creates the lines object based on a passed in board array
+  function Lines(board) {
+    return {
+      rows: [
+        [board[0], board[1], board[2]],
+        [board[3], board[4], board[5]],
+        [board[6], board[7], board[8]]
+      ],
 
-    rows: [
-      [board[0], board[1], board[2]],
-      [board[3], board[4], board[5]],
-      [board[6], board[7], board[8]]
-    ],
+      cols: [
+        [board[0], board[3], board[6]],
+        [board[1], board[4], board[7]],
+        [board[2], board[5], board[8]]
+      ],
 
-    cols: [
-      [board[0], board[3], board[6]],
-      [board[1], board[4], board[7]],
-      [board[2], board[5], board[8]]
-    ],
-
-    // TODO: figure out how to handle the center square, it occupies both diags
-    diags: [
-      [board[0], board[4], board[8]],
-      [board[2], board[4], board[6]]
-
-    ]
-  };
-
+      diags: [
+        [board[0], board[4], board[8]],
+        [board[2], board[4], board[6]]
+      ]
+    };
+  }
 
 // switch which player is the current player
 function togglePlayer() {
@@ -173,8 +169,10 @@ function AITurn() {
         * returns an array of all possible board locations
       */
     // TODO: make this function accept the board and lines
-    function findWinningMoves(marker) {
+    function findWinningMoves(marker, board) {
       var possibleSpaces = [];
+      var lines = new Lines(board);
+
       for (prop in lines) {
         for (var i = 0; i < lines[prop].length; i++) {
           for (var j = 0, markerCount = 0, nullCount = 0, locationOfNull; j < lines[prop][i].length; j++) {
@@ -186,7 +184,6 @@ function AITurn() {
               locationOfOpenSpace = lines[prop][i][j].boardLoc;
             }
             if (markerCount === 2 && nullCount === 1) {
-                console.log('winning line');
               possibleSpaces.push(locationOfOpenSpace);
             }
           }
@@ -200,10 +197,10 @@ function AITurn() {
         on the next turn
       */
     function preventPlayerWin() {
-      var possibleMoves = findWinningMoves(playerMarker);
+      var possibleMoves = findWinningMoves(playerMarker, board);
 
       // TODO: replace with actual move placement
-      console.log(possibleMoves);
+      return possibleMoves;
 
     }
 
@@ -242,8 +239,8 @@ function AITurn() {
 
     }
 
-    console.log(findWinningMoves(AIMarker));
-    preventPlayerWin();
+    console.log('findWinningMoves(): ' + findWinningMoves(AIMarker, board));
+    console.log('preventPlayerWin(): ' + preventPlayerWin());
 
     /*
       this function will iterate over each lines
@@ -289,6 +286,8 @@ function gameTurn() {
   */
 function updateBoard(space, currentPlayer) {
 
+  var lines = new Lines(board);
+
     // update the space with the appropriate marker, determined by who is
     // the current player
 
@@ -313,6 +312,7 @@ function updateBoard(space, currentPlayer) {
 }
 
 function checkForWin(row, col, diag1, diag2) {
+  var lines = new Lines(board);
 
 
   var rowMarkerArr = [],
