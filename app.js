@@ -366,6 +366,9 @@ function updateBoard(space, currentPlayer) {
     }
 }
 
+// TODO: rewrite this function
+// accept newly placed space object
+// will test for win against all lines the space belongs
 function checkForWin(row, col, diag1, diag2) {
   var lines = new Lines(board);
 
@@ -455,3 +458,12 @@ function checkForWin(row, col, diag1, diag2) {
 
   return victoryObject
 }
+
+/*************************
+CONTROLLER
+*************************/
+
+
+/*************************
+VIEW
+*************************/
