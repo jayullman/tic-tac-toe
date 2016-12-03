@@ -229,7 +229,7 @@ function AITurn() {
         to win for the AI next turn. (if there are more than 1, then the player
         can't win)
       */
-    function findWinInTwoMoves(board, lines) {
+    function findWinInTwoMoves(board) {
       /**
         * make a copy of the board, place marker temporarily and then run
           findWinningMoves(), the space that has the most results, ie
@@ -240,26 +240,39 @@ function AITurn() {
         */
 
 
-      var tempBoard = board,
-          lines = new Lines(tempBoard),
+      var tempBoard,
+          lines = new Lines(board),
           numberOfMoves = [];
 
       // create copy of board
 
 
-      // iterate over tempBoard look for empty space
-      for (var i = 0; i < tempBoard.length; i++) {
-        if (tempBoard[i].marker === null) {
-
+      // iterate over board look for empty space
+      for (var i = 0; i < board.length; i++) {
+        tempBoard = createCopyOfBoard(board);
+        if (board[i].marker === null) {
+          tempBoard[i].marker = AIMarker;
+          numberOfMoves.push(findWinningMoves(AIMarker, tempBoard).length);
         } else {
           numberOfMoves.push(0);
         }
       }
 
+      // find index that contains the greatest highest number of possible wins
+      // in two moves
+      var indexOfLargestNum = 0;
+      for (var i = 0; i < numberOfMoves.length; i++) {
+        if (numberOfMoves[indexOfLargestNum] < numberOfMoves[i]) {
+          indexOfLargestNum = i;
+        }
+      }
+      bestSpace = indexOfLargestNum;
+      return bestSpace;
     }
 
     console.log('findWinningMoves(): ' + findWinningMoves(AIMarker, board));
     console.log('preventPlayerWin(): ' + preventPlayerWin());
+    console.log('findWinInTwoMoves(): ' + findWinInTwoMoves(board));
 
     /*
       this function will iterate over each lines
