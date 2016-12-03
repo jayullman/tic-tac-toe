@@ -15,6 +15,12 @@ var isPlayersTurn = true;
 var playerMarker;
 var AIMarker;
 
+// for testing: logs whose turn it is
+function whoseTurn() {
+  var currentTurn = isPlayersTurn ? "player's" : "AI's";
+  console.log('It is the ' + currentTurn + ' turn');
+}
+
 (function setMarkers() {
   playerMarker = 'x'
   AIMarker = 'o';
@@ -159,14 +165,18 @@ function AITurn() {
 
     /** This function iterates over every row, col, diags
         * looks for any possible space that will result in a win for the AI
+
+        * accepts marker parameter: determines whether it looks for player or AI
+          markers
         * returns an array of all possible board locations
       */
-    function findWinningMove() {
+    // TODO: make this function accept either player or AI markers
+    function findWinningMoves(marker) {
       var possibleSpaces = [];
       for (prop in lines) {
         for (var i = 0; i < lines[prop].length; i++) {
           for (var j = 0, markerCount = 0, nullCount = 0, locationOfNull; j < lines[prop][i].length; j++) {
-            if (lines[prop][i][j].marker === AIMarker) {
+            if (lines[prop][i][j].marker === marker) {
               markerCount++;
             }
             if (lines[prop][i][j].marker === null) {
@@ -176,15 +186,39 @@ function AITurn() {
             if (markerCount === 2 && nullCount === 1) {
                 console.log('winning line');
               possibleSpaces.push(locationOfOpenSpace);
-              // possibleSpaces.push(lines[prop][lines[prop][i].indexOf(null).boardLoc]);
             }
           }
         }
       }
-      console.log(possibleSpaces);
+      return possibleSpaces;
     }
 
-    findWinningMove();
+    /** This funuction is the second AI step
+      * function will look for the space that will give the player victory
+        on the next turn
+      */
+    function preventPlayerWin() {
+      var possibleMoves = findWinningMoves(playerMarker);
+      console.log(possibleMoves);
+
+    }
+
+    /** This function will look for all possible spaces that will give the AI a
+        win in two moves (ie one AI marker with no player markers)
+      * It should test place a temp marker on each candidate space and then run
+      * findWinningMoves().
+      * Space should be selected based on which array is largest returned from
+        findWinningMoves(), ie, which move will result in the most opportunities
+        to win for the AI next turn. (if there are more than 1, then the player
+        can't win)
+      */
+    function findWinInTwoMoves() {
+
+    }
+
+    console.log(findWinningMoves(AIMarker));
+    preventPlayerWin();
+
     /*
       this function will iterate over each lines
         - find a line that contains two ai markers and 1 null
