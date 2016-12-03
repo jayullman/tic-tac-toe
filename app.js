@@ -122,41 +122,51 @@ var board = [
   *   would only contain player markers
   */
 
-  // this function accepts the board, and returns a copy without references
-  function createCopyOfBoard(board) {
-    var newBoard = [];
-    var spaceObject;
-    for (var i = 0; i < board.length; i++) {
-      spaceObject = {};
-      for (prop in board[i]) {
-          spaceObject[prop] = board[i][prop];
-      }
-      newBoard.push(spaceObject);
+// ensures user selection is a legal move
+// returns true if legal move, false otherwise
+function verifyPlayerMove(space) {
+  if (board[space].marker === null) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// this function accepts the board, and returns a copy without references
+function createCopyOfBoard(board) {
+  var newBoard = [];
+  var spaceObject;
+  for (var i = 0; i < board.length; i++) {
+    spaceObject = {};
+    for (prop in board[i]) {
+        spaceObject[prop] = board[i][prop];
     }
-    return newBoard;
+    newBoard.push(spaceObject);
   }
+  return newBoard;
+}
 
-  // this function creates the lines object based on a passed in board array
-  function Lines(board) {
-    return {
-      rows: [
-        [board[0], board[1], board[2]],
-        [board[3], board[4], board[5]],
-        [board[6], board[7], board[8]]
-      ],
+// this function creates the lines object based on a passed in board array
+function Lines(board) {
+  return {
+    rows: [
+      [board[0], board[1], board[2]],
+      [board[3], board[4], board[5]],
+      [board[6], board[7], board[8]]
+    ],
 
-      cols: [
-        [board[0], board[3], board[6]],
-        [board[1], board[4], board[7]],
-        [board[2], board[5], board[8]]
-      ],
+    cols: [
+      [board[0], board[3], board[6]],
+      [board[1], board[4], board[7]],
+      [board[2], board[5], board[8]]
+    ],
 
-      diags: [
-        [board[0], board[4], board[8]],
-        [board[2], board[4], board[6]]
-      ]
-    };
-  }
+    diags: [
+      [board[0], board[4], board[8]],
+      [board[2], board[4], board[6]]
+    ]
+  };
+}
 
 // switch which player is the current player
 function togglePlayer() {
@@ -464,14 +474,30 @@ CONTROLLER
 *************************/
 
 window.onload = function() {
-  function clickHandler() {
+  function clickSpace(e) {
+    // TODO: add code for click space handler
+
+    // removes the number from the table cell id (space-'1')
+    var spaceSelection = e.target.id.slice(-1);
+    if (verifyPlayerMove(spaceSelection)) {
+      // TODO: add code here
+    }
   }
 
-  // initialize event handlers
-  var boardSpaces = document.getElementsByTagName('td')
-  for (var i = 0; i < boardSpaces.length; i++) {
-    boardSpaces[i].addEventListener('click', clickHandler);
+  function clickStartBtn() {
+    // TODO: add code for start button handler
   }
+
+  function initializeAllEventHandlers() {
+    var boardSpaces = document.getElementsByTagName('td')
+    for (var i = 0; i < boardSpaces.length; i++) {
+      boardSpaces[i].addEventListener('click', clickSpace);
+    }
+  }
+
+//////////////////////////
+
+initializeAllEventHandlers();
 
 };
 
