@@ -12,8 +12,13 @@
 var isPlayersTurn = true;
 
 // determines the markers for player and ai, player should determine
-var playerMarker = 'x';
-var AIMarker = 'o';
+var playerMarker;
+var AIMarker;
+
+(function setMarkers() {
+  playerMarker = 'x'
+  AIMarker = 'o';
+})();
 
 /** Create board
   * An array of objects
@@ -129,9 +134,8 @@ var board = [
     // TODO: figure out how to handle the center square, it occupies both diags
     diags: [
       [board[0], board[4], board[8]],
-      [board[2], board[4], board[6]],
-      // ???
-      []
+      [board[2], board[4], board[6]]
+
     ]
   };
 
@@ -143,6 +147,50 @@ function togglePlayer() {
     } else {
       isPlayersTurn = true;
     }
+}
+
+function AITurn() {
+  /** AI algorithm:
+      1) Find winning move
+      2) Block player's win
+      3) Find move that results in greatest number of lines that have
+         2 AI markers and no human markers
+    */
+
+    /** This function iterates over every row, col, diags
+        * looks for any possible space that will result in a win for the AI
+        * returns an array of all possible board locations
+      */
+    function findWinningMove() {
+      var possibleSpaces = [];
+      for (prop in lines) {
+        for (var i = 0; i < lines[prop].length; i++) {
+          for (var j = 0, markerCount = 0, nullCount = 0, locationOfNull; j < lines[prop][i].length; j++) {
+            if (lines[prop][i][j].marker === AIMarker) {
+              markerCount++;
+            }
+            if (lines[prop][i][j].marker === null) {
+              nullCount++;
+              locationOfOpenSpace = lines[prop][i][j].boardLoc;
+            }
+            if (markerCount === 2 && nullCount === 1) {
+                console.log('winning line');
+              possibleSpaces.push(locationOfOpenSpace);
+              // possibleSpaces.push(lines[prop][lines[prop][i].indexOf(null).boardLoc]);
+            }
+          }
+        }
+      }
+      console.log(possibleSpaces);
+    }
+
+    findWinningMove();
+    /*
+      this function will iterate over each lines
+        - find a line that contains two ai markers and 1 null
+        - place marker in that space
+    */
+
 }
 
 // this function will act as the game's controller
