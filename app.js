@@ -199,6 +199,8 @@ function AITurn() {
       */
     function preventPlayerWin() {
       var possibleMoves = findWinningMoves(playerMarker);
+
+      // TODO: replace with actual move placement
       console.log(possibleMoves);
 
     }
@@ -261,14 +263,14 @@ function gameTurn() {
   *
   * accepts number as argument, indicating the space on the board
   */
-function updateBoard(space) {
+function updateBoard(space, currentPlayer) {
 
     // update the space with the appropriate marker, determined by who is
     // the current player
 
     // determines what the current marker is, 'x' or 'o', depending on
     // whose turn it is
-    var currentMarker = isPlayersTurn ? playerMarker : AIMarker;
+    var currentMarker = currentPlayer === 'player' ? playerMarker : AIMarker;
 
     board[space].marker = currentMarker;
 
