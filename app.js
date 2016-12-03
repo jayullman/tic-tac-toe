@@ -123,6 +123,8 @@ var board = [
   *   would only contain player markers
   */
 
+  // create a constructor function that creates these lines using a
+  // passed-in board parameter
   var lines = {
 
     rows: [
@@ -170,7 +172,7 @@ function AITurn() {
           markers
         * returns an array of all possible board locations
       */
-    // TODO: make this function accept either player or AI markers
+    // TODO: make this function accept the board and lines
     function findWinningMoves(marker) {
       var possibleSpaces = [];
       for (prop in lines) {
@@ -207,14 +209,36 @@ function AITurn() {
 
     /** This function will look for all possible spaces that will give the AI a
         win in two moves (ie one AI marker with no player markers)
+      * It should only run if the previous two functions do not return any
+        possibilities
       * It should test place a temp marker on each candidate space and then run
-      * findWinningMoves().
+        findWinningMoves().
       * Space should be selected based on which array is largest returned from
         findWinningMoves(), ie, which move will result in the most opportunities
         to win for the AI next turn. (if there are more than 1, then the player
         can't win)
       */
-    function findWinInTwoMoves() {
+    function findWinInTwoMoves(board, lines) {
+      /**
+        * make a copy of the board, place marker temporarily and then run
+          findWinningMoves(), the space that has the most results, ie
+          ( findWinningMoves.length) should be the place the AI selects
+        * for each length number, push onto array.
+        * Iterate over array, find the largest number and record index.
+        * index with largest number is the best move
+        */
+      var tempBoard = board,
+          tempLines = lines,
+          numberOfMoves = [];
+
+      // iterate over tempBoard look for empty space
+      for (var i = 0; i < tempBoard.length; i++) {
+        if (tempBoard[i].marker === null) {
+
+        } else {
+          numberOfMoves.push(0);
+        }
+      }
 
     }
 
