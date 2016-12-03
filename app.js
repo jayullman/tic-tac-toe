@@ -463,6 +463,18 @@ function checkForWin(row, col, diag1, diag2) {
 CONTROLLER
 *************************/
 
+window.onload = function() {
+  function clickHandler() {
+  }
+
+  // initialize event handlers
+  var boardSpaces = document.getElementsByTagName('td')
+  for (var i = 0; i < boardSpaces.length; i++) {
+    boardSpaces[i].addEventListener('click', clickHandler);
+  }
+
+};
+
 
 /*************************
 VIEW
