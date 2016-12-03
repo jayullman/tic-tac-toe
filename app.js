@@ -122,6 +122,20 @@ var board = [
   *   would only contain player markers
   */
 
+  // this function accepts the board, and returns a copy without references
+  function createCopyOfBoard(board) {
+    var newBoard = [];
+    var spaceObject;
+    for (var i = 0; i < board.length; i++) {
+      spaceObject = {};
+      for (prop in board[i]) {
+          spaceObject[prop] = board[i][prop];
+      }
+      newBoard.push(spaceObject);
+    }
+    return newBoard;
+  }
+
   // this function creates the lines object based on a passed in board array
   function Lines(board) {
     return {
@@ -224,9 +238,14 @@ function AITurn() {
         * Iterate over array, find the largest number and record index.
         * index with largest number is the best move
         */
+
+
       var tempBoard = board,
-          tempLines = lines,
+          lines = new Lines(tempBoard),
           numberOfMoves = [];
+
+      // create copy of board
+
 
       // iterate over tempBoard look for empty space
       for (var i = 0; i < tempBoard.length; i++) {
