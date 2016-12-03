@@ -270,9 +270,32 @@ function AITurn() {
       return bestSpace;
     }
 
+    // the AI will select a random square if it does not already have a
+    // marker on the board
+    function makeRandomMove() {
+      // create array of all possible spaces
+      var possibleMoves = [];
+      var spaceSelection;
+      var randomIndex;
+
+      for (var i = 0; i < board.length; i++) {
+        if (board[i].marker === null) {
+          possibleMoves.push(i);
+        }
+      }
+      console.log(possibleMoves);
+      // select a random number from 0-length of possibleMoves
+      randomIndex = Math.floor(Math.random() * possibleMoves.length);
+      console.log(randomIndex);
+      spaceSelection = possibleMoves[randomIndex];
+
+      return spaceSelection;
+    }
+
     console.log('findWinningMoves(): ' + findWinningMoves(AIMarker, board));
     console.log('preventPlayerWin(): ' + preventPlayerWin());
     console.log('findWinInTwoMoves(): ' + findWinInTwoMoves(board));
+    console.log('makeRandomMove(): ' + makeRandomMove());
 
     /*
       this function will iterate over each lines
