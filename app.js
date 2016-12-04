@@ -473,6 +473,12 @@ function checkForWin(row, col, diag1, diag2) {
 CONTROLLER
 *************************/
 
+
+
+/*************************
+VIEW
+*************************/
+
 window.onload = function() {
   function clickSpace(e) {
     // TODO: add code for click space handler
@@ -499,9 +505,13 @@ window.onload = function() {
 
 initializeAllEventHandlers();
 
+if (document.getElementById('xMarker').checked) {
+  console.log('x marker is checked!');
+  // true: playerMarker = 'x'
+}
+
+if (document.getElementByID('firstTurn').checked) {
+  // true: computer goes first
+}
+
 };
-
-
-/*************************
-VIEW
-*************************/
