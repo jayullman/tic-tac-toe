@@ -20,6 +20,9 @@ var isPlayersTurn;
 var playerMarker;
 var AIMarker;
 
+// this will control whether the game is currently being played
+var gameOn = false;
+
 
 // for testing: logs whose turn it is
 function whoseTurn() {
@@ -322,41 +325,12 @@ function AITurn() {
 
 }
 
-// this function will act as the game's controller
-function gameTurn() {
-  /** function outline
-
-  WHILE (victory == false):
-
-    1. If player's turn
-      - ask player to make move
-
-
-    2. If AI's move
-      - inform player that the AI is making a move
-      - have AI select the next best move
-
-    3. get player/ai input
-    4. update board
-    5. check for win
-      a. if win:
-        - highlight winning rows, cols, diags
-        - if game won: notify play
-
-      b. no win:
-        - toggle to next player
-
-   END WHILE
-  */
-
-}
-
 /** accepts placement
   * updates the board and all of the lines
   *
   * accepts number as argument, indicating the space on the board
   */
-function updateBoard(space, currentPlayer) {
+function placeMarker(space, currentPlayer) {
 
   var lines = new Lines(board);
 
@@ -501,16 +475,72 @@ function startGame() {
   var playerNameInput = document.getElementById('nameField').value;
   var playerName = playerNameInput ? playerNameInput : 'Human';
 
-
-
-
   console.log('The game has begun, ' + playerName);
 
+  gameOn = true;
+  gameTurn();
 }
+
+
+
+function playerTurn() {
+// send message to message screen: you're turn, Human
+
+
+
+  isPlayersTurn = false;
+}
+
+
 
 // game turn:
 
 
+/** function outline
+
+WHILE (victory == false):
+
+  1. If player's turn
+    - ask player to make move
+
+
+  2. If AI's move
+    - inform player that the AI is making a move
+    - have AI select the next best move
+
+  3. get player/ai input
+  4. update board
+  5. check for win
+    a. if win:
+      - highlight winning rows, cols, diags
+      - if game won: notify play
+
+    b. no win:
+      - toggle to next player
+
+*/
+
+
+// this function will control the overall flow of the game
+function gameTurn() {
+
+  if (gameOn) {
+    if (isPlayersTurn) {
+      playerTurn();
+    } else {
+      AITurn();
+    }
+
+
+  // check for victory
+  // if victory:
+  //   gameOn = false
+  //   victory() -> needs to be written
+
+  }
+
+
+}
 
 
 /*************************
