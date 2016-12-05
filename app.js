@@ -4,15 +4,22 @@
 
   */
 
+
+/*************************
+MODEL / GAME DATA
+*************************/
+
+
 /** determines if it is the players turn
   * true: human player's turn
   * false: AI's turn
   */
-var isPlayersTurn = true;
+var isPlayersTurn;
 
 // determines the markers for player and ai, player should determine
 var playerMarker;
 var AIMarker;
+
 
 // for testing: logs whose turn it is
 function whoseTurn() {
@@ -132,7 +139,7 @@ function verifyPlayerMove(space) {
   }
 }
 
-// this function accepts the board, and returns a copy without references
+// this function accepts a board, and returns a copy without references
 function createCopyOfBoard(board) {
   var newBoard = [];
   var spaceObject;
@@ -146,7 +153,7 @@ function createCopyOfBoard(board) {
   return newBoard;
 }
 
-// this function creates the lines object based on a passed in board array
+// this function creates the lines object based on a passed-in board array
 function Lines(board) {
   return {
     rows: [
@@ -473,6 +480,37 @@ function checkForWin(row, col, diag1, diag2) {
 CONTROLLER
 *************************/
 
+// when player presses start:
+function startGame() {
+  if (document.getElementById('xMarker').checked) {
+    playerMarker = 'x';
+    AIMarker = 'o';
+  } else {
+    playerMarker = 'o';
+    AIMarker = 'x';
+  }
+
+  if (document.getElementById('human-turn').checked) {
+    isPlayersTurn = true;
+  } else {
+    isPlayersTurn = false;
+  }
+
+  // collect name from name field on game setup form
+  // default value is 'Human' if field is empty
+  var playerNameInput = document.getElementById('nameField').value;
+  var playerName = playerNameInput ? playerNameInput : 'Human';
+
+
+
+
+  console.log('The game has begun, ' + playerName);
+
+}
+
+// game turn:
+
+
 
 
 /*************************
@@ -492,26 +530,21 @@ window.onload = function() {
 
   function clickStartBtn() {
     // TODO: add code for start button handler
+    startGame();
   }
 
   function initializeAllEventHandlers() {
-    var boardSpaces = document.getElementsByTagName('td')
+    var boardSpaces = document.getElementsByTagName('td'),
+        startButton = document.getElementById('begin-game-btn');
     for (var i = 0; i < boardSpaces.length; i++) {
       boardSpaces[i].addEventListener('click', clickSpace);
     }
+    startButton.addEventListener('click', clickStartBtn);
   }
 
 //////////////////////////
 
 initializeAllEventHandlers();
 
-if (document.getElementById('xMarker').checked) {
-  console.log('x marker is checked!');
-  // true: playerMarker = 'x'
-}
-
-if (document.getElementByID('firstTurn').checked) {
-  // true: computer goes first
-}
 
 };

@@ -9,7 +9,6 @@
 </head>
 <body>
   <!-- IDEA: create overlay div to dim out the game board until game begins-->
-  <button id="begin-game-btn">Start Game</button>
 
   <table>
     <tr>
@@ -35,8 +34,14 @@
     <label>x<input type="radio" name="marker" value="x" checked id="xMarker"></label>
     <label>o<input type="radio" name="marker" value="o" id="oMarker"></label>
   </p>
-  <p>Computer goes first? <input type="checkbox" id="firstTurn">
+
+  <p>Who goes first?:
+  <label>Human<input type="radio" name="firstTurn" value="human" checked id="human-turn"></label>
+  <label>AI<input type="radio" name="firstTurn" value="ai" id="ai-turn"></label>
+</p>
+    <p>What is your name? <input type="text" id="nameField"></p>
   </form>
+  <button id="begin-game-btn">Start Game</button>
 </div>
 </body>
 </html>
