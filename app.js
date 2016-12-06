@@ -16,6 +16,9 @@ MODEL / GAME DATA
   */
 var isPlayersTurn;
 
+// determines whether the game should still be played
+var victory = false;
+
 // determines the markers for player and ai, player should determine
 var playerMarker;
 var AIMarker;
@@ -30,10 +33,13 @@ function whoseTurn() {
   console.log('It is the ' + currentTurn + ' turn');
 }
 
+
+/* TODO: remove when unneccesary
 (function setMarkers() {
   playerMarker = 'x'
   AIMarker = 'o';
 })();
+*/
 
 /** Create board
   * An array of objects
@@ -188,7 +194,7 @@ function togglePlayer() {
 }
 
 function AITurn() {
-  /** AI algorithm:
+    /** AI algorithm:
       1) Find winning move
       2) Block player's win
       3) Find move that results in greatest number of lines that have
@@ -231,10 +237,10 @@ function AITurn() {
         on the next turn
       */
     function preventPlayerWin() {
-      var possibleMoves = findWinningMoves(playerMarker, board);
+      var possibleSpaces = findWinningMoves(playerMarker, board);
 
       // TODO: replace with actual move placement
-      return possibleMoves;
+      return possibleSpaces;
 
     }
 
@@ -311,17 +317,14 @@ function AITurn() {
 
       return spaceSelection;
     }
-
     console.log('findWinningMoves(): ' + findWinningMoves(AIMarker, board));
     console.log('preventPlayerWin(): ' + preventPlayerWin());
     console.log('findWinInTwoMoves(): ' + findWinInTwoMoves(board));
     console.log('makeRandomMove(): ' + makeRandomMove());
 
-    /*
-      this function will iterate over each lines
-        - find a line that contains two ai markers and 1 null
-        - place marker in that space
-    */
+    // create cascade starting from best possible move
+    findWinningMoves(AIMarker, board);
+    console.log(possibleMoves.length);
 
 }
 
@@ -330,7 +333,7 @@ function AITurn() {
   *
   * accepts number as argument, indicating the space on the board
   */
-function placeMarker(space, currentPlayer) {
+function placeMarker(space) {
 
   var lines = new Lines(board);
 
@@ -339,7 +342,7 @@ function placeMarker(space, currentPlayer) {
 
     // determines what the current marker is, 'x' or 'o', depending on
     // whose turn it is
-    var currentMarker = currentPlayer === 'player' ? playerMarker : AIMarker;
+    var currentMarker = isPlayersTurn ? playerMarker : AIMarker;
 
     board[space].marker = currentMarker;
 
@@ -348,13 +351,14 @@ function placeMarker(space, currentPlayer) {
         diag1 = board[space].diag1,
         diag2 = board[space].diag2;
 
-
+    document.getElementById('space-' + space).innerHTML = currentMarker;
     // TODO: move this to gameTurn()
     // check for win
     // check each affected line for win
-    if (checkForWin(lines.rows[rowNum], lines.cols[colNum], diag1, diag2).gameWon) {
-      console.log('win!');
-    }
+
+    // if (checkForWin(lines.rows[rowNum], lines.cols[colNum], diag1, diag2).gameWon) {
+    //   console.log('win!');
+    // }
 }
 
 // TODO: rewrite this function
@@ -488,7 +492,7 @@ function playerTurn() {
 
 
 
-  isPlayersTurn = false;
+  //isPlayersTurn = false;
 }
 
 
@@ -524,7 +528,7 @@ WHILE (victory == false):
 // this function will control the overall flow of the game
 function gameTurn() {
 
-  if (gameOn) {
+  if (victory === false) {
     if (isPlayersTurn) {
       playerTurn();
     } else {
@@ -537,7 +541,9 @@ function gameTurn() {
   //   gameOn = false
   //   victory() -> needs to be written
 
-  }
+} else {
+  console.log('Game Over!');
+}
 
 
 }
@@ -553,9 +559,11 @@ window.onload = function() {
 
     // removes the number from the table cell id (space-'1')
     var spaceSelection = e.target.id.slice(-1);
-    if (verifyPlayerMove(spaceSelection)) {
-      // TODO: add code here
-    }
+    // if (verifyPlayerMove(spaceSelection)) {
+    //   // TODO: add code here
+    // }
+
+    placeMarker(spaceSelection);
   }
 
   function clickStartBtn() {
