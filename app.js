@@ -14,7 +14,7 @@ MODEL / GAME DATA
   * true: human player's turn
   * false: AI's turn
   */
-var isPlayersTurn;
+var isPlayersTurn = false;
 
 // determines whether the game should still be played
 var victory = false;
@@ -184,6 +184,16 @@ function Lines(board) {
   };
 }
 
+// accepts parameter: upper range.
+// returns a random number from 0 - upperRange
+function selectRandomElement(arr) {
+  var randomIndex;
+
+  randomIndex = Math.floor(Math.random() * arr.length);
+
+  return arr[randomIndex];
+
+}
 // switch which player is the current player
 function togglePlayer() {
     if (isPlayersTurn) {
@@ -270,7 +280,6 @@ function AITurn() {
           lines = new Lines(board),
           numberOfMoves = [];
 
-      // create copy of board
 
 
       // iterate over board look for empty space
@@ -284,7 +293,7 @@ function AITurn() {
         }
       }
 
-      // find index that contains the greatest highest number of possible wins
+      // find index that contains the largest number of possible wins
       // in two moves
       var indexOfLargestNum = 0;
       for (var i = 0; i < numberOfMoves.length; i++) {
@@ -292,8 +301,14 @@ function AITurn() {
           indexOfLargestNum = i;
         }
       }
-      bestSpace = indexOfLargestNum;
-      return bestSpace;
+
+      // if there are no good moves, ie, the numberOfMoves array is
+      // all 0's, return -1
+      if (numberOfMoves[indexOfLargestNum] === 0) {
+        return -1;
+      } else {
+        return indexOfLargestNum;
+      }
     }
 
     // the AI will select a random square if it does not already have a
@@ -308,23 +323,46 @@ function AITurn() {
         if (board[i].marker === null) {
           possibleMoves.push(i);
         }
+
       }
-      console.log(possibleMoves);
+
+      // return -1 if the board is full
+      if (possibleMoves.length === 0) {
+        return -1;
+      }
       // select a random number from 0-length of possibleMoves
       randomIndex = Math.floor(Math.random() * possibleMoves.length);
-      console.log(randomIndex);
+
       spaceSelection = possibleMoves[randomIndex];
 
       return spaceSelection;
     }
-    console.log('findWinningMoves(): ' + findWinningMoves(AIMarker, board));
+
+    /*
+    console.log(findWinningMoves(AIMarker, board));
     console.log('preventPlayerWin(): ' + preventPlayerWin());
     console.log('findWinInTwoMoves(): ' + findWinInTwoMoves(board));
     console.log('makeRandomMove(): ' + makeRandomMove());
-
+    */
     // create cascade starting from best possible move
-    findWinningMoves(AIMarker, board);
-    console.log(possibleMoves.length);
+
+
+    bestMoves = findWinningMoves(AIMarker, board);
+    if (bestMoves.length > 0) {
+      return selectRandomElement(bestMoves);
+    }
+
+    bestMoves = preventPlayerWin();
+    if (bestMoves.length > 0) {
+      return selectRandomElement(bestMoves);
+    }
+
+    bestMoves = findWinInTwoMoves(board);
+    if (bestMoves > -1) {
+      return bestMoves;
+    }
+
+    return makeRandomMove();
 
 }
 
@@ -487,6 +525,7 @@ function startGame() {
 
 
 
+
 function playerTurn() {
 // send message to message screen: you're turn, Human
 
@@ -532,7 +571,9 @@ function gameTurn() {
     if (isPlayersTurn) {
       playerTurn();
     } else {
-      AITurn();
+      placeMarker(AITurn());
+      isPlayersTurn = true;
+
     }
 
 
@@ -541,9 +582,9 @@ function gameTurn() {
   //   gameOn = false
   //   victory() -> needs to be written
 
-} else {
-  console.log('Game Over!');
-}
+  } else {
+    console.log('Game Over!');
+  }
 
 
 }
@@ -555,15 +596,17 @@ VIEW
 
 window.onload = function() {
   function clickSpace(e) {
-    // TODO: add code for click space handler
+    if (isPlayersTurn) {
+      // removes the number from the table cell id (space-'1')
+      var spaceSelection = e.target.id.slice(-1);
+      // if (verifyPlayerMove(spaceSelection)) {
+      //   // TODO: add code here
+      // }
 
-    // removes the number from the table cell id (space-'1')
-    var spaceSelection = e.target.id.slice(-1);
-    // if (verifyPlayerMove(spaceSelection)) {
-    //   // TODO: add code here
-    // }
-
-    placeMarker(spaceSelection);
+      placeMarker(spaceSelection);
+      isPlayersTurn = false;
+      gameTurn();
+    }
   }
 
   function clickStartBtn() {
