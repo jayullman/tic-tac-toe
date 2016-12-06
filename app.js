@@ -204,7 +204,12 @@ function togglePlayer() {
 }
 
 function AITurn() {
+
+  // TODO: function to prevent player winning with center space
+  //       ai must play on the diagonal, either 0, 2, 6, 8
+
     /** AI algorithm:
+
       1) Find winning move
       2) Block player's win
       3) Find move that results in greatest number of lines that have
@@ -218,7 +223,9 @@ function AITurn() {
           markers
         * returns an array of all possible board locations
       */
-    // TODO: make this function accept the board and lines
+
+
+
     function findWinningMoves(marker, board) {
       var possibleSpaces = [];
       var lines = new Lines(board);
@@ -349,19 +356,23 @@ function AITurn() {
 
     bestMoves = findWinningMoves(AIMarker, board);
     if (bestMoves.length > 0) {
+      console.log('Computer chose move from findWinningMoves()');
       return selectRandomElement(bestMoves);
     }
 
     bestMoves = preventPlayerWin();
     if (bestMoves.length > 0) {
+      console.log('Computer chose move from preventPlayerWin()');
       return selectRandomElement(bestMoves);
     }
 
     bestMoves = findWinInTwoMoves(board);
     if (bestMoves > -1) {
+      console.log('Computer chose move from findWinInTwoMoves()');
       return bestMoves;
     }
 
+    console.log('Computer chose move from makeRandomMove()');
     return makeRandomMove();
 
 }
