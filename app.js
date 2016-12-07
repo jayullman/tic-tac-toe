@@ -185,24 +185,16 @@ function selectRandomElement(arr) {
   return arr[randomIndex];
 
 }
-// switch which player is the current player
-function togglePlayer() {
-    if (isPlayersTurn) {
-      isPlayersTurn = false;
-    } else {
-      isPlayersTurn = true;
-    }
-}
 
 function AITurn() {
 
-
     /** AI algorithm:
-
-      1) Find winning move
-      2) Block player's win
-      3) Find move that results in greatest number of lines that have
+      1) Prevent player win with center square
+      2) Find AI winning move
+      3) Block player's win next turn
+      4) Find move that results in greatest number of lines that have
          2 AI markers and no human markers
+      5) Make random selection
     */
 
     /** This function iterates over every row, col, diags
@@ -333,15 +325,6 @@ function AITurn() {
       return spaceSelection;
     }
 
-    /*
-    console.log(findWinningMoves(AIMarker, board));
-    console.log('preventPlayerWin(): ' + preventPlayerWin());
-    console.log('findWinInTwoMoves(): ' + findWinInTwoMoves(board));
-    console.log('makeRandomMove(): ' + makeRandomMove());
-    */
-    // create cascade starting from best possible move
-
-
     /**
       This function prevents a win by the player when a center square
       is played first. In order to prevent the player from winning,
@@ -427,6 +410,7 @@ function placeMarker(space) {
       victory = true;
       isPlayersTurn = false;
       console.log('win detected!');
+      // TODO: send to view to show winning lines
       // run victory functions -> show winning lines, message to player, etc
     }
 }
@@ -487,7 +471,6 @@ function startGame() {
 
   console.log('The game has begun, ' + playerName);
 
-  gameOn = true;
   gameTurn();
 }
 
@@ -540,11 +523,6 @@ function gameTurn() {
 
     }
 
-
-  // check for victory
-  // if victory:
-  //   gameOn = false
-  //   victory() -> needs to be written
 
   } else {
     console.log('Game Over!');
