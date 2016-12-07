@@ -23,8 +23,6 @@ var victory = false;
 var playerMarker;
 var AIMarker;
 
-// this will control whether the game is currently being played
-var gameOn = false;
 
 
 // for testing: logs whose turn it is
@@ -33,13 +31,6 @@ function whoseTurn() {
   console.log('It is the ' + currentTurn + ' turn');
 }
 
-
-/* TODO: remove when unneccesary
-(function setMarkers() {
-  playerMarker = 'x'
-  AIMarker = 'o';
-})();
-*/
 
 /** Create board
   * An array of objects
@@ -426,6 +417,18 @@ function placeMarker(space) {
     // if (checkForWin(lines.rows[rowNum], lines.cols[colNum], diag1, diag2).gameWon) {
     //   console.log('win!');
     // }
+    var victoryArray;
+
+
+    victoryArray = checkForWin(currentMarker);
+    console.log(victoryArray);
+    console.log(currentMarker);
+    if (victoryArray.length > 0) {
+      victory = true;
+      isPlayersTurn = false;
+      console.log('win detected!');
+      // run victory functions -> show winning lines, message to player, etc
+    }
 }
 
 // TODO: rewrite this function
@@ -440,8 +443,6 @@ function checkForWin(marker) {
     */
   var winningLines = [];
 
-  var marker = marker === playerMarker ? playerMarker : AIMarker;
-
   for (prop in lines) {
     for (var i = 0; i < lines[prop].length; i++) {
       for (var j = 0, markerCount = 0, nullCount = 0, locationOfNull; j < lines[prop][i].length; j++) {
@@ -451,7 +452,6 @@ function checkForWin(marker) {
         if (markerCount === 3) {
           console.log('win on ' + prop + ' ' + i);
           winningLines.push(prop + i);
-        //  possibleSpaces.push(locationOfOpenSpace);
         }
       }
     }
@@ -493,17 +493,6 @@ function startGame() {
 
 
 
-
-function playerTurn() {
-// send message to message screen: you're turn, Human
-
-
-
-  //isPlayersTurn = false;
-}
-
-
-
 // game turn:
 
 
@@ -535,9 +524,16 @@ WHILE (victory == false):
 // this function will control the overall flow of the game
 function gameTurn() {
 
+  var currentMarker = isPlayersTurn ? playerMarker : AIMarker;
+
+  /** this will hold the retured value from checkForWin(), which is an
+      array of all the winning lines
+    */
+
+
   if (victory === false) {
     if (isPlayersTurn) {
-      playerTurn();
+      // TODO: possibly message to player informing player of turn
     } else {
       placeMarker(AITurn());
       isPlayersTurn = true;
@@ -564,7 +560,7 @@ VIEW
 
 window.onload = function() {
   function clickSpace(e) {
-    if (isPlayersTurn) {
+    if (isPlayersTurn && victory === false) {
       // removes the number from the table cell id (space-'1')
       var spaceSelection = e.target.id.slice(-1);
 
