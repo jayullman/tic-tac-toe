@@ -205,8 +205,6 @@ function togglePlayer() {
 
 function AITurn() {
 
-  // TODO: function to prevent player winning with center space
-  //       ai must play on the diagonal, either 0, 2, 6, 8
 
     /** AI algorithm:
 
@@ -223,7 +221,6 @@ function AITurn() {
           markers
         * returns an array of all possible board locations
       */
-
 
 
     function findWinningMoves(marker, board) {
@@ -352,6 +349,29 @@ function AITurn() {
     console.log('makeRandomMove(): ' + makeRandomMove());
     */
     // create cascade starting from best possible move
+
+
+    /**
+      This function prevents a win by the player when a center square
+      is played first. In order to prevent the player from winning,
+      the AI must must play on the diagonal, either 0, 2, 6, 8
+      check to see if all squares are null except for square 4,
+      check if square 4 is occupied by playerMarker
+      */
+
+    if ( board[0].marker === null &&
+         board[1].marker === null &&
+         board[2].marker === null &&
+         board[3].marker === null &&
+         board[5].marker === null &&
+         board[6].marker === null &&
+         board[7].marker === null &&
+         board[8].marker === null &&
+         board[4].marker === playerMarker
+        ) {
+          console.log('condition true');
+          return selectRandomElement([0, 2, 6, 8]);
+        }
 
 
     bestMoves = findWinningMoves(AIMarker, board);
