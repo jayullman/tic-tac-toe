@@ -358,7 +358,6 @@ function AITurn() {
       check to see if all squares are null except for square 4,
       check if square 4 is occupied by playerMarker
       */
-
     if ( board[0].marker === null &&
          board[1].marker === null &&
          board[2].marker === null &&
@@ -369,7 +368,6 @@ function AITurn() {
          board[8].marker === null &&
          board[4].marker === playerMarker
         ) {
-          console.log('condition true');
           return selectRandomElement([0, 2, 6, 8]);
         }
 
@@ -630,13 +628,12 @@ window.onload = function() {
     if (isPlayersTurn) {
       // removes the number from the table cell id (space-'1')
       var spaceSelection = e.target.id.slice(-1);
-      // if (verifyPlayerMove(spaceSelection)) {
-      //   // TODO: add code here
-      // }
 
-      placeMarker(spaceSelection);
-      isPlayersTurn = false;
-      gameTurn();
+      if (verifyPlayerMove(spaceSelection)) {
+        placeMarker(spaceSelection);
+        isPlayersTurn = false;
+        gameTurn();
+      }
     }
   }
 
