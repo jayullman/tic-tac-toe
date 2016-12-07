@@ -431,94 +431,33 @@ function placeMarker(space) {
 // TODO: rewrite this function
 // accept newly placed space object
 // will test for win against all lines the space belongs
-function checkForWin(row, col, diag1, diag2) {
+function checkForWin(marker) {
   var lines = new Lines(board);
 
+  /** this array will be returned from function
+      if array is empty, calling code will know
+      no win has occured
+    */
+  var winningLines = [];
 
-  var rowMarkerArr = [],
-      colMarkerArr = [],
-      diag1MarkerArr = [],
-      diag2MarkerArr = [];
+  var marker = marker === playerMarker ? playerMarker : AIMarker;
 
-  var victoryObject = {};
-  var currentMarker = isPlayersTurn ? playerMarker : AIMarker;
-
-  var checkElems = function(item) {
-    return item === currentMarker;
-  };
-
-  // create an array of markers for the passed in row
-  for (var i = 0; i < row.length; i++) {
-    rowMarkerArr.push(row[i].marker);
-  }
-
-  for (var i = 0; i < col.length; i++) {
-    colMarkerArr.push(col[i].marker);
-  }
-
-  // only create array of diags if the selection lies within a diagonal
-  if (diag1) {
-    for (var i = 0; i < lines.diags[0].length; i++) {
-      diag1MarkerArr.push(lines.diags[0][i].marker);
-    }
-    // check to see if diag1 is full, ie no null values present
-    if (diag1MarkerArr.indexOf(null) < 0) {
-      if (diag1MarkerArr.every(checkElems)) {
-        console.log('diag1 is full of the same marker!');
-        victoryObject.diag1 = true;
-      }
-    }
-
-  }
-
-  if (diag2) {
-    for (var i = 0; i < lines.diags[1].length; i++) {
-      diag2MarkerArr.push(lines.diags[1][i].marker);
-    }
-    // check to see if diag2 is full, ie no null values present
-    if (diag2MarkerArr.indexOf(null) < 0) {
-      if (diag2MarkerArr.every(checkElems)) {
-        console.log('diag2 is full of the same marker!');
-        victoryObject.diag2 = true;
+  for (prop in lines) {
+    for (var i = 0; i < lines[prop].length; i++) {
+      for (var j = 0, markerCount = 0, nullCount = 0, locationOfNull; j < lines[prop][i].length; j++) {
+        if (lines[prop][i][j].marker === marker) {
+          markerCount++;
+        }
+        if (markerCount === 3) {
+          console.log('win on ' + prop + ' ' + i);
+          winningLines.push(prop + i);
+        //  possibleSpaces.push(locationOfOpenSpace);
+        }
       }
     }
   }
 
-  // check to see if row is full, ie no null values present
-  if (rowMarkerArr.indexOf(null) < 0) {
-    if (rowMarkerArr.every(checkElems)) {
-      console.log('row is full of the same marker!');
-      victoryObject.row = true;
-    }
-  }
-
-  // check to see if col is full, ie no null values present
-  if (colMarkerArr.indexOf(null) < 0) {
-    if (colMarkerArr.every(checkElems)) {
-      console.log('col is full of the same marker!');
-      victoryObject.col = true;
-    }
-  }
-
-
-  // function will return an object if the last move resulted in a working
-  // will return undefined if no win is detected
-
-  // victory object will pass back an object
-  /*
-  var victoryObject = {
-    row: winning row
-    col: winning column
-    diag1: bool
-    diag2: bool
-  }
-  */
-  if (victoryObject.row || victoryObject.col ||
-      victoryObject.diag1 || victoryObject.diag2) {
-        victoryObject.gameWon = true;
-  }
-
-  return victoryObject
+  return winningLines;
 }
 
 /*************************
