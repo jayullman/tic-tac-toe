@@ -100,3 +100,24 @@ td {
 .bottom-border {
   border-bottom: 3px solid rgb(117, 219, 230);
 }
+
+/* Marker Classes */
+
+.x-line1 {
+  
+  width: 50px;
+  height: 3px;
+  background: green;
+  transform: rotate(0.125turn);
+}
+
+.x-line2 {
+  width: 50px;
+  height: 3px;
+  background: green;
+  transform: rotate(0.875turn);
+}
+
+.full-length {
+
+}

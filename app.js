@@ -535,6 +535,17 @@ function gameTurn() {
 /*************************
 VIEW
 *************************/
+function drawMarker(space, marker) {
+  var space = document.getElementById('space-0');
+
+  var line1 = document.createElement('div');
+  line1.className = 'x-line1';
+  space.appendChild(line1);
+  var line2 = document.createElement('div');
+  line2.className = 'x-line2';
+  space.appendChild(line2);
+}
+
 
 window.onload = function() {
   function clickSpace(e) {
@@ -563,6 +574,7 @@ window.onload = function() {
     }
     startButton.addEventListener('click', clickStartBtn);
   }
+
 
 //////////////////////////
 
