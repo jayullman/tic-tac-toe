@@ -408,9 +408,7 @@ function placeMarker(space) {
     }
 }
 
-// TODO: rewrite this function
-// accept newly placed space object
-// will test for win against all lines the space belongs
+// will test for win
 function checkForWin(marker) {
   var lines = new Lines(board);
 
@@ -456,9 +454,6 @@ function startGame() {
   } else {
     isPlayersTurn = false;
   }
-
-  // collect name from name field on game setup form
-  // default value is 'Human' if field is empty
 
 
   console.log('The game has begun');
