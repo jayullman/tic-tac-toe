@@ -3,11 +3,6 @@
    License: none (public domain)
 */
 
-/* Triadic Color Scheme
-		clock color: #5fdddd
-	 focus color: #dd5Fdd
-	 break color: #dddd5f
-*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -103,21 +98,64 @@ td {
 
 /* Marker Classes */
 
+/* This class is for the square that the marker
+ 		will be drawn on
+*/
+.div-square {
+	width: 50px;
+	height: 50px;
+	position: relative;
+	margin: auto;
+}
+
 .x-line1 {
-  
-  width: 50px;
-  height: 3px;
-  background: green;
-  transform: rotate(0.125turn);
+
+  width: 100%;
+  height: 5px;
+  background: white;
+	position: absolute;
+	top: 50%;
+	transition: transform .5s cubic-bezier(.87,1.91,.68,.8);
 }
 
 .x-line2 {
-  width: 50px;
-  height: 3px;
-  background: green;
-  transform: rotate(0.875turn);
+  width: 100%;
+  height: 5px;
+  background: white;
+	position: absolute;
+	top: 50%;
+	transition: transform .5s cubic-bezier(.87,1.91,.68,.8);
 }
 
-.full-length {
+.line1-end {
+  transform: rotate(0.125turn);
 
+}
+
+.line2-end {
+  transform: rotate(-0.125turn);
+
+}
+
+
+.circle-small-size {
+	width: 0;
+	height: 0;
+	border-radius: 50%;
+	border: 6px solid purple;
+
+	position: absolute;
+	top: 50%;
+	margin-left: 25px;
+	transform: translate(-5px, -50%);
+	transition: width .5s cubic-bezier(.87,1.91,.68,.8),
+							height .5s cubic-bezier(.87,1.91,.68,.8),
+							margin .5s cubic-bezier(.87,1.91,.68,.8);
+
+}
+
+.circle-full-size {
+	width: 100%;
+	height: 100%;
+	margin-left: 0;
 }

@@ -1,10 +1,3 @@
-/** NOTES
-
-    posibly make updateBoard() into a method of board?
-
-  */
-
-
 /*************************
 MODEL / GAME DATA
 *************************/
@@ -536,14 +529,46 @@ function gameTurn() {
 VIEW
 *************************/
 function drawMarker(space, marker) {
-  var space = document.getElementById('space-0');
 
-  var line1 = document.createElement('div');
-  line1.className = 'x-line1';
-  space.appendChild(line1);
-  var line2 = document.createElement('div');
-  line2.className = 'x-line2';
-  space.appendChild(line2);
+
+
+  var space = document.getElementById(space);
+  var divElem = document.createElement('div');
+  divElem.className = 'div-square';
+
+  space.appendChild(divElem);
+
+  if (marker === 'x') {
+    // draws an animated 'x' marker onto the board
+
+    var line1 = document.createElement('div');
+    line1.className = 'x-line1';
+    var line2 = document.createElement('div');
+    line2.className = 'x-line2';
+    divElem.appendChild(line1);
+    divElem.appendChild(line2);
+
+    window.setTimeout(function() {
+      line1.className += ' line1-end';
+      line2.className += ' line2-end';
+
+    }, 100);
+
+  } else {
+    // draws an animated 'o' marker onto the board
+
+    var circle = document.createElement('div');
+    circle.className = 'circle-small-size';
+    divElem.appendChild(circle);
+
+    window.setTimeout(function() {
+      circle.className += ' circle-full-size';
+    }, 10);
+
+
+
+  }
+
 }
 
 
