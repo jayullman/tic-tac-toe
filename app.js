@@ -385,7 +385,7 @@ function placeMarker(space) {
         diag1 = board[space].diag1,
         diag2 = board[space].diag2;
 
-    document.getElementById('space-' + space).innerHTML = currentMarker;
+    // document.getElementById(space).innerHTML = currentMarker;
     // TODO: move this to gameTurn()
     // check for win
     // check each affected line for win
@@ -459,10 +459,9 @@ function startGame() {
 
   // collect name from name field on game setup form
   // default value is 'Human' if field is empty
-  var playerNameInput = document.getElementById('nameField').value;
-  var playerName = playerNameInput ? playerNameInput : 'Human';
 
-  console.log('The game has begun, ' + playerName);
+
+  console.log('The game has begun');
 
   gameTurn();
 }
@@ -501,6 +500,7 @@ WHILE (victory == false):
 function gameTurn() {
 
   var currentMarker = isPlayersTurn ? playerMarker : AIMarker;
+  var AISpaceSelection;
 
   /** this will hold the retured value from checkForWin(), which is an
       array of all the winning lines
@@ -511,9 +511,14 @@ function gameTurn() {
     if (isPlayersTurn) {
       // TODO: possibly message to player informing player of turn
     } else {
-      placeMarker(AITurn());
-      isPlayersTurn = true;
+      // gives time buffer between player and AI moves
 
+      window.setTimeout(function() {
+        AISpaceSelection = AITurn();
+        placeMarker(AISpaceSelection);
+        drawMarker(AISpaceSelection, AIMarker)
+        isPlayersTurn = true;
+      }, 750);
     }
 
 
@@ -575,11 +580,11 @@ function drawMarker(space, marker) {
 window.onload = function() {
   function clickSpace(e) {
     if (isPlayersTurn && victory === false) {
-      // removes the number from the table cell id (space-'1')
-      var spaceSelection = e.target.id.slice(-1);
+      var spaceSelection = e.target.id;
 
       if (verifyPlayerMove(spaceSelection)) {
         placeMarker(spaceSelection);
+        drawMarker(spaceSelection, playerMarker)
         isPlayersTurn = false;
         gameTurn();
       }
