@@ -37,83 +37,84 @@ function whoseTurn() {
   * marker: indicates whether the player or ai controls the square
   */
 
-  // IDEA: make board into an object that contains the space object, which
-  //       would be an array of objects and the line object, which would contain
-  //       rows, cols, diags, which would be arrays
-var board = [
-  {
-    boardLoc: 0,
-    row: 0,
-    col: 0,
-    diag1: true,
-    diag2: false,
-    marker: null
-  },
-  {
-    boardLoc: 1,
-    row: 0,
-    col: 1,
-    diag1: false,
-    diag2: false,
-    marker: null
-  },
-  {
-    boardLoc: 2,
-    row: 0,
-    col: 2,
-    diag1: false,
-    diag2: true,
-    marker: null
-  },
-  {
-    boardLoc: 3,
-    row: 1,
-    col: 0,
-    diag1: false,
-    diag2: false,
-    marker: null
-  },
-  {
-    boardLoc: 4,
-    row: 1,
-    col: 1,
-    diag1: true,
-    diag2: true,
-    marker: null
-  },
-  {
-    boardLoc: 5,
-    row: 1,
-    col: 2,
-    diag1: false,
-    diag2: false,
-    marker: null
-  },
-  {
-    boardLoc: 6,
-    row: 2,
-    col: 0,
-    diag1: false,
-    diag2: true,
-    marker: null
-  },
-  {
-    boardLoc: 7,
-    row: 2,
-    col: 1,
-    diag1: false,
-    diag2: false,
-    marker: null
-  },
-  {
-    boardLoc: 8,
-    row: 2,
-    col: 2,
-    diag1: true,
-    diag2: false,
-    marker: null
-  }
-];
+function createInitialBoard() {
+  return [
+    {
+      boardLoc: 0,
+      row: 0,
+      col: 0,
+      diag1: true,
+      diag2: false,
+      marker: null
+    },
+    {
+      boardLoc: 1,
+      row: 0,
+      col: 1,
+      diag1: false,
+      diag2: false,
+      marker: null
+    },
+    {
+      boardLoc: 2,
+      row: 0,
+      col: 2,
+      diag1: false,
+      diag2: true,
+      marker: null
+    },
+    {
+      boardLoc: 3,
+      row: 1,
+      col: 0,
+      diag1: false,
+      diag2: false,
+      marker: null
+    },
+    {
+      boardLoc: 4,
+      row: 1,
+      col: 1,
+      diag1: true,
+      diag2: true,
+      marker: null
+    },
+    {
+      boardLoc: 5,
+      row: 1,
+      col: 2,
+      diag1: false,
+      diag2: false,
+      marker: null
+    },
+    {
+      boardLoc: 6,
+      row: 2,
+      col: 0,
+      diag1: false,
+      diag2: true,
+      marker: null
+    },
+    {
+      boardLoc: 7,
+      row: 2,
+      col: 1,
+      diag1: false,
+      diag2: false,
+      marker: null
+    },
+    {
+      boardLoc: 8,
+      row: 2,
+      col: 2,
+      diag1: true,
+      diag2: false,
+      marker: null
+    }
+  ];
+}
+
+var board = createInitialBoard();
 
 /** create rows, cols, diags
   *
@@ -397,8 +398,7 @@ function placeMarker(space) {
 
 
     victoryArray = checkForWin(currentMarker);
-    console.log(victoryArray);
-    console.log(currentMarker);
+
     if (victoryArray.length > 0) {
       victory = true;
       isPlayersTurn = false;
