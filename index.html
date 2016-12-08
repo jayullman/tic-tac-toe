@@ -15,21 +15,23 @@
   <h2>A freeCodeCamp Project <a href="https://www.freecodecamp.com/">
     <i class="fa fa-free-code-camp" aria-hidden="true"></i></a></h2>
 
-<div class="table-container">
-<div class="overlay">
-  <form>
-    <p>Select your marker:
-    <label>x<input type="radio" name="marker" value="x" checked id="xMarker"></label>
-    <label>o<input type="radio" name="marker" value="o" id="oMarker"></label>
-  </p>
+  <div class="table-container">
+    <div class="table-overlay" id="settings-box">
+      <div class="settings-overlay" id="settings-overlay">
+        <form>
+          <p>Select your marker:
+          <label>x<input type="radio" name="marker" value="x" checked id="xMarker"></label>
+          <label>o<input type="radio" name="marker" value="o" id="oMarker"></label>
+        </p>
 
-  <p>Who goes first?:
-  <label>Human<input type="radio" name="firstTurn" value="human" checked id="human-turn"></label>
-  <label>AI<input type="radio" name="firstTurn" value="ai" id="ai-turn"></label>
-  </p>
-  </form>
-<button id="begin-game-btn">Start Game</button>
-</div>
+        <p>Who goes first?:
+        <label>Human<input type="radio" name="firstTurn" value="human" checked id="human-turn"></label>
+        <label>AI<input type="radio" name="firstTurn" value="ai" id="ai-turn"></label>
+        </p>
+        </form>
+        <button id="begin-game-btn">Start Game</button>
+      </div>
+  </div>
   <table>
     <tr>
         <td class="right-border bottom-border" id="0"></td>

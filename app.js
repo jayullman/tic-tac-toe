@@ -36,9 +36,9 @@ function whoseTurn() {
   *   top right towards bottom left
   * marker: indicates whether the player or ai controls the square
   */
-
+var board = [];
 function createInitialBoard() {
-  return [
+  board = [
     {
       boardLoc: 0,
       row: 0,
@@ -114,7 +114,7 @@ function createInitialBoard() {
   ];
 }
 
-var board = createInitialBoard();
+createInitialBoard();
 
 /** create rows, cols, diags
   *
@@ -457,6 +457,15 @@ function startGame() {
 
 
   console.log('The game has begun');
+  var settingsBox = document.getElementById('settings-box');
+  var settingsOverlay = document.getElementById('settings-overlay');
+
+  settingsBox.className += ' hide-table-overlay';
+  settingsOverlay.className += ' blur';
+
+  window.setTimeout(function () {
+  settingsBox.className += ' remove-box';
+}, 600);
 
   gameTurn();
 }
@@ -521,6 +530,20 @@ function gameTurn() {
     console.log('Game Over!');
   }
 
+
+}
+
+// this function resets board and UI to initial state
+function resetGame() {
+  createInitialBoard();
+
+  var tableCells = document.getElementsByTagName('td');
+  for (var i = 0; i < tableCells.length; i++) {
+    tableCells[i].innerHTML = '';
+  }
+
+  victory = false;
+  gameTurn();
 
 }
 

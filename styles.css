@@ -194,10 +194,28 @@ button {
 	margin-top: 15px;
 }
 
-.overlay {
+.table-overlay {
 	width: 250px;
 	height: 250px;
 	background: rgba(0, 0, 0, .8);
 	position: absolute;
 	z-index: 5;
+	transition: background 1s, color 1s;
+}
+
+.hide-table-overlay {
+	background: rgba(0, 0, 0, 0);
+	color: transparent;
+}
+
+.settings-overlay {
+
+}
+
+.blur {
+	background-color: rgba(0, 0, 0, 1);
+}
+
+.remove-box {
+	display: none;
 }
