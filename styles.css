@@ -171,7 +171,7 @@ button {
 	width: 0;
 	height: 0;
 	border-radius: 50%;
-	border: 5px solid purple;
+	border: 5px solid #f25ce3;
 
 	position: absolute;
 	top: 50%;

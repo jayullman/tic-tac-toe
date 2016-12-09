@@ -320,7 +320,7 @@ function AITurn() {
     }
 
     /**
-      This function prevents a win by the player when a center square
+      This statement prevents a win by the player when a center square
       is played first. In order to prevent the player from winning,
       the AI must must play on the diagonal, either 0, 2, 6, 8
       check to see if all squares are null except for square 4,
@@ -338,6 +338,34 @@ function AITurn() {
         ) {
           return selectRandomElement([0, 2, 6, 8]);
         }
+
+    /**
+      The AI will take the center squre on the first move or on the
+      second move if the player has not yet taken it
+      */
+    // if ( board[0].marker === null &&
+    //      board[1].marker === null &&
+    //      board[2].marker === null &&
+    //      board[3].marker === null &&
+    //      board[4].marker === null &&
+    //      board[5].marker === null &&
+    //      board[6].marker === null &&
+    //      board[7].marker === null &&
+    //      board[8].marker === null ) {
+    //       return 4;
+    //     }
+
+    for (var i = 0, playerMarkerCount = 0, nullCount = 0; i < board.length; i++) {
+      if (board[i].marker === playerMarker) {
+        playerMarkerCount++;
+      }
+      if (board[i].marker === null) {
+        nullCount++
+      }
+    }
+    if (playerMarkerCount === 1 && nullCount === 8) {
+      return 4;
+    }
 
 
     bestMoves = findWinningMoves(AIMarker, board);
