@@ -18,18 +18,20 @@
   <div class="table-container">
     <div class="settings-box" id="settings-box">
       <div class="settings-overlay" id="settings-overlay">
-        <!-- <div class="blur-settings-box" id="blur-settings-box"></div> -->
-        <form>
-          <p>Select your marker:
-          <label>x<input type="radio" name="marker" value="x" checked id="xMarker"></label>
-          <label>o<input type="radio" name="marker" value="o" id="oMarker"></label>
-        </p>
 
-        <p>Who goes first?:
-        <label>Human<input type="radio" name="firstTurn" value="human" checked id="human-turn"></label>
-        <label>AI<input type="radio" name="firstTurn" value="ai" id="ai-turn"></label>
-        </p>
-        </form>
+        <div class="setting-group">
+          <p>Select your marker:</p>
+          <button id="x-marker-btn" class="setting-btn active-setting-btn">x</button>
+          <button id="o-marker-btn" class="setting-btn">o</button>
+        </div>
+
+        <div class="setting-group">
+
+          <p>Who goes first?:</p>
+          <button id="you-btn" class="setting-btn active-setting-btn">You</button>
+          <button id="ai-btn" class="setting-btn">AI</button>
+        </div>
+
         <button id="begin-game-btn">Start Game</button>
       </div>
   </div>

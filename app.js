@@ -8,13 +8,15 @@ MODEL / GAME DATA
   * false: AI's turn
   */
 var isPlayersTurn = false;
+var playerGoesFirst = true;
+gameInProgress = false;
 
 // determines whether the game should still be played
 var victory = false;
 
 // determines the markers for player and ai, player should determine
-var playerMarker;
-var AIMarker;
+var playerMarker = 'x';
+var AIMarker = 'o';
 
 
 
@@ -448,17 +450,18 @@ function placeMarker(space) {
       }, 4000);
 
       victory = true;
+      gameInProgress = true;
       // isPlayersTurn = false;
       console.log('win detected!');
       // TODO: send to view to show winning lines
       // run victory functions -> show winning lines, message to player, etc
-    }
+    } else if (countEmptySpaces() === 0) {
 
     // DRAW condition: shows message and resets game
-    if (countEmptySpaces() === 0) {
       console.log('draw!');
       victory = true; // change to gameInProgress
       // TODO: write draw conditions
+      gameInProgress = true;
 
       showMessage('DRAW!', 3000);
       setTimeout(function() {
@@ -500,43 +503,41 @@ CONTROLLER
 *************************/
 
 // when player presses start:
-function startGame() {
+function startGameButton() {
 
-  if (document.getElementById('xMarker').checked) {
-    playerMarker = 'x';
-    AIMarker = 'o';
+  if (!gameInProgress) {
+    if (playerGoesFirst) {
+      isPlayersTurn = true;
+    } else {
+      isPlayersTurn = false;
+    }
+
+    console.log('The game has begun');
+
+
+    var settingsBox = document.getElementById('settings-box');
+    var settingsOverlay = document.getElementById('settings-overlay');
+    var settingsButton = document.getElementById('settings-btn');
+
+    // addClass(settingsOverlay, 'blur');
+    addClass(settingsButton, 'visible');
+
+    // addClass(settingsBox, 'move-settings');
+    // settingsBox.className += ' move-settings';
+    // settingsOverlay.className += ' blur';
+    // settingsButton.className += ' visible';
+
+  //   window.setTimeout(function () {
+  //   settingsBox.className += ' remove-box';
+  // }, 600);
+
+    gameInProgress = true;
+    gameTurn();
   } else {
-    playerMarker = 'o';
-    AIMarker = 'x';
+    // this code will cause the game to reset if the game is running
+    resetGame();
   }
 
-  if (document.getElementById('human-turn').checked) {
-    isPlayersTurn = true;
-  } else {
-    isPlayersTurn = false;
-  }
-
-
-  console.log('The game has begun');
-
-
-  var settingsBox = document.getElementById('settings-box');
-  var settingsOverlay = document.getElementById('settings-overlay');
-  var settingsButton = document.getElementById('settings-btn');
-
-  // addClass(settingsOverlay, 'blur');
-  addClass(settingsButton, 'visible');
-
-  // addClass(settingsBox, 'move-settings');
-  // settingsBox.className += ' move-settings';
-  // settingsOverlay.className += ' blur';
-  // settingsButton.className += ' visible';
-
-//   window.setTimeout(function () {
-//   settingsBox.className += ' remove-box';
-// }, 600);
-
-  gameTurn();
 }
 
 
@@ -611,12 +612,13 @@ function resetGame() {
     tableCells[i].innerHTML = '';
   }
 
-  if (document.getElementById('human-turn').checked) {
+  if (playerGoesFirst) {
     isPlayersTurn = true;
   } else {
     isPlayersTurn = false;
   }
 
+  gameInProgress = true;
   victory = false;
   gameTurn();
 
@@ -626,6 +628,8 @@ function resetGame() {
 /*************************
 VIEW
 *************************/
+
+
 
 /** This function will display a message to the user.
     msg: a string that will be the message
@@ -655,8 +659,10 @@ function addClass(elem, style) {
 function removeClass(elem, style) {
   var elemClassList = elem.className;
   var startIndex = elemClassList.indexOf(' ' + style);
-  var revertedClassList = elemClassList.slice(0, startIndex);
-  elem.className = revertedClassList;
+  if (startIndex > -1) {
+    var revertedClassList = elemClassList.slice(0, startIndex);
+    elem.className = revertedClassList;
+  }
 }
 
 function drawMarker(space, marker) {
@@ -702,6 +708,46 @@ function drawMarker(space, marker) {
 
 window.onload = function() {
 
+  /** This function handles what happens when a user selects a button
+      within the settings screen
+    */
+  function checkSettingBox(e) {
+
+
+    switch (e.target.id) {
+
+      case 'x-marker-btn':
+        playerMarker = 'x';
+        AIMarker = 'o';
+        addClass(document.getElementById('x-marker-btn'), 'active-setting-btn');
+        removeClass(document.getElementById('o-marker-btn'), 'active-setting-btn');
+        break;
+
+      case 'o-marker-btn':
+        playerMarker = 'o';
+        AIMarker = 'x';
+        addClass(document.getElementById('o-marker-btn'), 'active-setting-btn');
+        removeClass(document.getElementById('x-marker-btn'), 'active-setting-btn');
+        break;
+
+      case 'you-btn':
+        playerGoesFirst = true;
+        addClass(document.getElementById('you-btn'), 'active-setting-btn');
+        removeClass(document.getElementById('ai-btn'), 'active-setting-btn');
+        break;
+
+      case 'ai-btn':
+        playerGoesFirst = false;
+        addClass(document.getElementById('ai-btn'), 'active-setting-btn');
+        removeClass(document.getElementById('you-btn'), 'active-setting-btn');
+        break;
+
+
+    }
+
+
+  }
+
   function clickSpace(e) {
     if (isPlayersTurn && victory === false) {
       var spaceSelection = e.target.id;
@@ -719,11 +765,15 @@ window.onload = function() {
   function clickStartBtn() {
     // TODO: add code for start button handler
     toggleSettings();
-    startGame();
+    startGameButton();
   }
 
   function toggleSettings() {
     var settingsButton = document.getElementById('settings-btn');
+    var startButton = document.getElementById('begin-game-btn');
+    if (gameInProgress) {
+      startButton.innerHTML = 'Restart';
+    }
 
     // if the settingsBox does not have the move-box class:
     if (settingsBox.className.indexOf('move') < 0) {
@@ -742,18 +792,29 @@ window.onload = function() {
 
   function initializeAllEventHandlers() {
     var boardSpaces = document.getElementsByTagName('td'),
-        startButton = document.getElementById('begin-game-btn');
+        startButton = document.getElementById('begin-game-btn'),
+        settingsButtons = document.getElementsByClassName('setting-btn');
+
     for (var i = 0; i < boardSpaces.length; i++) {
       boardSpaces[i].addEventListener('click', clickSpace);
     }
     startButton.addEventListener('click', clickStartBtn);
-
-
     settingsButton.addEventListener('click', toggleSettings);
+
+
+    for (var i = 0; i < settingsButtons.length; i++) {
+      settingsButtons[i].addEventListener('click', checkSettingBox);
+    }
   }
 
   var settingsButton = document.getElementById('settings-btn');
   var startButton = document.getElementById('begin-game-btn');
+  if (gameInProgress) {
+    startButton.innerHTML = 'Restart';
+  } else {
+    startButton.innerHTML = 'Begin Game';
+  }
+
   var settingsBox = document.getElementById('settings-box');
 
 
