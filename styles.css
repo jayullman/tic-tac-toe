@@ -99,6 +99,10 @@ td {
   text-align: center;
 }
 
+form {
+	padding-top: 40px;
+}
+
 button {
 	border: 1px solid white;
 	color: white;
@@ -185,6 +189,29 @@ button {
 	margin-left: 5px;
 }
 
+.settings-btn {
+	padding: .4em;
+	opacity: 0;
+	transition: opacity 1.5s;
+	display: table;
+	margin: 20px auto 0 auto;
+}
+
+.visible {
+	opacity: 1;
+}
+
+.btn {
+	border: 1px solid #fff;
+	cursor: default;
+	user-select: none;
+}
+
+.btn:active {
+	color: #000;
+	background-color: #fff;
+}
+
 
 /* Overlay Settings Styles */
 
@@ -194,28 +221,36 @@ button {
 	margin-top: 15px;
 }
 
-.table-overlay {
+.settings-box {
 	width: 250px;
 	height: 250px;
 	background: rgba(0, 0, 0, .8);
 	position: absolute;
 	z-index: 5;
-	transition: background 1s, color 1s;
+	transition: margin 1s cubic-bezier(.43,-.3,.53,.7);
 }
 
-.hide-table-overlay {
-	background: rgba(0, 0, 0, 0);
-	color: transparent;
+.move-settings {
+	margin-top: -400px;
 }
 
 .settings-overlay {
+	position: relative;
 
 }
 
+/*.blur-settings-box {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	z-index: -1;
+}
+
 .blur {
+	z-index: 5;
 	background-color: rgba(0, 0, 0, 1);
 }
 
 .remove-box {
 	display: none;
-}
+}*/

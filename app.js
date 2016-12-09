@@ -457,15 +457,23 @@ function startGame() {
 
 
   console.log('The game has begun');
+
+
   var settingsBox = document.getElementById('settings-box');
   var settingsOverlay = document.getElementById('settings-overlay');
+  var settingsButton = document.getElementById('settings-btn');
 
-  settingsBox.className += ' hide-table-overlay';
-  settingsOverlay.className += ' blur';
+  // addClass(settingsOverlay, 'blur');
+  addClass(settingsButton, 'visible');
 
-  window.setTimeout(function () {
-  settingsBox.className += ' remove-box';
-}, 600);
+  // addClass(settingsBox, 'move-settings');
+  // settingsBox.className += ' move-settings';
+  // settingsOverlay.className += ' blur';
+  // settingsButton.className += ' visible';
+
+//   window.setTimeout(function () {
+//   settingsBox.className += ' remove-box';
+// }, 600);
 
   gameTurn();
 }
@@ -551,10 +559,21 @@ function resetGame() {
 /*************************
 VIEW
 *************************/
+
+// function that adds a class
+function addClass(elem, style) {
+  elem.className += ' ' + style;
+}
+
+// function that removes a class
+function removeClass(elem, style) {
+  var elemClassList = elem.className;
+  var startIndex = elemClassList.indexOf(' ' + style);
+  var revertedClassList = elemClassList.slice(0, startIndex);
+  elem.className = revertedClassList;
+}
+
 function drawMarker(space, marker) {
-
-
-
   var space = document.getElementById(space);
   var divElem = document.createElement('div');
   divElem.className = 'div-square';
@@ -596,6 +615,7 @@ function drawMarker(space, marker) {
 
 
 window.onload = function() {
+
   function clickSpace(e) {
     if (isPlayersTurn && victory === false) {
       var spaceSelection = e.target.id;
@@ -611,7 +631,17 @@ window.onload = function() {
 
   function clickStartBtn() {
     // TODO: add code for start button handler
+    toggleSettings();
     startGame();
+  }
+
+  function toggleSettings() {
+    // if the settingsBox does not have the move-box class:
+    if (settingsBox.className.indexOf('move') < 0) {
+      addClass(settingsBox, 'move-settings');
+    } else {
+      removeClass(settingsBox, 'move-settings');
+    }
   }
 
   function initializeAllEventHandlers() {
@@ -621,7 +651,14 @@ window.onload = function() {
       boardSpaces[i].addEventListener('click', clickSpace);
     }
     startButton.addEventListener('click', clickStartBtn);
+
+
+    settingsButton.addEventListener('click', toggleSettings);
   }
+
+  var settingsButton = document.getElementById('settings-btn');
+  var startButton = document.getElementById('begin-game-btn');
+  var settingsBox = document.getElementById('settings-box');
 
 
 //////////////////////////
