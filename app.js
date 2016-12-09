@@ -126,6 +126,8 @@ createInitialBoard();
 // ensures user selection is a legal move
 // returns true if legal move, false otherwise
 function verifyPlayerMove(space) {
+  console.log(space);
+  console.log(board[space].marker);
   if (board[space].marker === null) {
     return true;
   } else {
@@ -438,16 +440,31 @@ function placeMarker(space) {
     victoryArray = checkForWin(currentMarker);
 
     if (victoryArray.length > 0) {
+
+      showMessage(isPlayersTurn ? "You Won!" : "You Lost!", 3000);
+
+      setTimeout(function() {
+        resetGame();
+      }, 4000);
+
       victory = true;
-      isPlayersTurn = false;
+      // isPlayersTurn = false;
       console.log('win detected!');
       // TODO: send to view to show winning lines
       // run victory functions -> show winning lines, message to player, etc
     }
+
+    // DRAW condition: shows message and resets game
     if (countEmptySpaces() === 0) {
       console.log('draw!');
       victory = true; // change to gameInProgress
       // TODO: write draw conditions
+
+      showMessage('DRAW!', 3000);
+      setTimeout(function() {
+        resetGame();
+      }, 4000);
+
     }
 }
 
@@ -594,6 +611,12 @@ function resetGame() {
     tableCells[i].innerHTML = '';
   }
 
+  if (document.getElementById('human-turn').checked) {
+    isPlayersTurn = true;
+  } else {
+    isPlayersTurn = false;
+  }
+
   victory = false;
   gameTurn();
 
@@ -683,7 +706,8 @@ window.onload = function() {
     if (isPlayersTurn && victory === false) {
       var spaceSelection = e.target.id;
 
-      if (verifyPlayerMove(spaceSelection)) {
+      // tests whether space on board is empty
+      if (spaceSelection && verifyPlayerMove(spaceSelection)) {
         placeMarker(spaceSelection);
         drawMarker(spaceSelection, playerMarker)
         isPlayersTurn = false;
