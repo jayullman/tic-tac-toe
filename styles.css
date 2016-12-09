@@ -364,8 +364,8 @@ button {
 	background-color: #edf98b;
 	transform: rotate(135deg);
 	transform-origin: left;
-	top: 0%;
-	left: 100%;
+	top: 4%;
+	left: 96%;
 	transition: width .5s;
 }
 
