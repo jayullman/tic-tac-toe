@@ -410,10 +410,10 @@ function placeMarker(space) {
 
     board[space].marker = currentMarker;
 
-    var rowNum =  board[space].row,
-        colNum = board[space].col,
-        diag1 = board[space].diag1,
-        diag2 = board[space].diag2;
+    // var rowNum =  board[space].row,
+    //     colNum = board[space].col,
+    //     diag1 = board[space].diag1,
+    //     diag2 = board[space].diag2;
 
 
     var victoryArray;
@@ -433,7 +433,7 @@ function placeMarker(space) {
       gameInProgress = true;
 
       // TODO: send to view to show winning lines
-
+      drawWinningLines(victoryArray);
       // run victory functions -> show winning lines, message to player, etc
     } else if (countEmptySpaces() === 0) {
 
@@ -497,17 +497,13 @@ function startGameButton() {
 
 
     addClass(settingsButton, 'visible');
-    console.log(playerMarkerNextTurn);
     if (playerMarkerNextTurn === 'x') {
-      console.log('dude!');
       playerMarker = 'x';
       AIMarker = 'o';
     } else {
       playerMarker = 'o';
       AIMarker = 'x';
     }
-    console.log(playerMarkerNextTurn);
-    console.log(playerMarker);
 
     gameInProgress = true;
     gameTurn();
@@ -586,6 +582,11 @@ function resetGame() {
     tableCells[i].innerHTML = '';
   }
 
+  var winningLines = document.getElementsByClassName('winning-line');
+
+  for (var i = 0; i < winningLines.length; i++) {
+    winningLines[i].parentElement.removeChild(winningLines[i]);
+  }
   if (playerGoesFirst) {
     isPlayersTurn = true;
   } else {
@@ -687,6 +688,90 @@ function drawMarker(space, marker) {
   }
 
 }
+
+/** this function will draw lines through the winning lines
+    accepts an array of the winning lines
+  */
+function drawWinningLines(winningLines) {
+
+  function drawLine(startRow, direction) {
+    var line = document.createElement('div');
+
+    // use class to collect and remove when game restarts
+    addClass(line, 'winning-line');
+
+    if (direction === 'horizontal') {
+      addClass(line, 'begin-line-horizontal');
+      addClass(line, 'begin-row' + startRow);
+
+      document.getElementById('table-container').appendChild(line);
+      setTimeout(function () {
+
+        addClass(line, 'end-line-horizontal');
+      }, 100);
+
+    } else if (direction === 'vertical') {
+      addClass(line, 'begin-line-vertical');
+      addClass(line, 'begin-col' + startRow);
+
+      document.getElementById('table-container').appendChild(line);
+      setTimeout(function () {
+        addClass(line, 'end-line-vertical');
+      }, 100);
+
+    } else if (direction === 'diagonal-to-right') {
+      addClass(line, 'begin-diag-to-right');
+
+      document.getElementById('table-container').appendChild(line);
+      setTimeout(function () {
+
+        addClass(line, 'end-diag-to-right');
+      }, 100);
+
+    } else if (direction === 'diagonal-to-left') {
+      addClass(line, 'begin-diag-to-left');
+
+      document.getElementById('table-container').appendChild(line);
+      setTimeout(function () {
+
+        addClass(line, 'end-diag-to-left');
+      }, 100);
+    }
+
+
+
+  } // end drawLine
+
+
+  for (var i = 0; i < winningLines.length; i++) {
+    if (winningLines[i] === 'rows0') {
+      drawLine(0, 'horizontal');
+    } else if (winningLines[i] === 'rows1') {
+      drawLine(1, 'horizontal');
+    } else if (winningLines[i] === 'rows2') {
+      drawLine(2, 'horizontal');
+    }
+
+    if (winningLines[i] === 'cols0') {
+      drawLine(0, 'vertical');
+
+    } else if (winningLines[i] === 'cols1') {
+      drawLine(1, 'vertical');
+
+    } else if (winningLines[i] === 'cols2') {
+      drawLine(2, 'vertical');
+
+    }
+
+    if (winningLines[i] === 'diags0') {
+      drawLine(0, 'diagonal-to-right');
+    }
+
+    if (winningLines[i] === 'diags1') {
+      drawLine(0, 'diagonal-to-left');
+    }
+  }
+} // end drawWinningLines
 
 
 window.onload = function() {
