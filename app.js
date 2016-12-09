@@ -9,7 +9,7 @@ MODEL / GAME DATA
   */
 var isPlayersTurn = false;
 var playerGoesFirst = true;
-gameInProgress = false;
+var gameInProgress = false;
 
 // determines whether the game should still be played
 var victory = false;
@@ -18,14 +18,7 @@ var victory = false;
 var playerMarker = 'x';
 var AIMarker = 'o';
 
-
-
-// for testing: logs whose turn it is
-function whoseTurn() {
-  var currentTurn = isPlayersTurn ? "player's" : "AI's";
-  console.log('It is the ' + currentTurn + ' turn');
-}
-
+var playerMarkerNextTurn = 'x';
 
 /** Create board
   * An array of objects
@@ -128,8 +121,6 @@ createInitialBoard();
 // ensures user selection is a legal move
 // returns true if legal move, false otherwise
 function verifyPlayerMove(space) {
-  console.log(space);
-  console.log(board[space].marker);
   if (board[space].marker === null) {
     return true;
   } else {
@@ -375,23 +366,19 @@ function AITurn() {
 
     bestMoves = findWinningMoves(AIMarker, board);
     if (bestMoves.length > 0) {
-      console.log('Computer chose move from findWinningMoves()');
       return selectRandomElement(bestMoves);
     }
 
     bestMoves = preventPlayerWin();
     if (bestMoves.length > 0) {
-      console.log('Computer chose move from preventPlayerWin()');
       return selectRandomElement(bestMoves);
     }
 
     bestMoves = findWinInTwoMoves(board);
     if (bestMoves > -1) {
-      console.log('Computer chose move from findWinInTwoMoves()');
       return bestMoves;
     }
 
-    console.log('Computer chose move from makeRandomMove()');
     return makeRandomMove();
 
 }
@@ -428,14 +415,7 @@ function placeMarker(space) {
         diag1 = board[space].diag1,
         diag2 = board[space].diag2;
 
-    // document.getElementById(space).innerHTML = currentMarker;
-    // TODO: move this to gameTurn()
-    // check for win
-    // check each affected line for win
 
-    // if (checkForWin(lines.rows[rowNum], lines.cols[colNum], diag1, diag2).gameWon) {
-    //   console.log('win!');
-    // }
     var victoryArray;
 
 
@@ -451,14 +431,13 @@ function placeMarker(space) {
 
       victory = true;
       gameInProgress = true;
-      // isPlayersTurn = false;
-      console.log('win detected!');
+
       // TODO: send to view to show winning lines
+
       // run victory functions -> show winning lines, message to player, etc
     } else if (countEmptySpaces() === 0) {
 
     // DRAW condition: shows message and resets game
-      console.log('draw!');
       victory = true; // change to gameInProgress
       // TODO: write draw conditions
       gameInProgress = true;
@@ -488,7 +467,6 @@ function checkForWin(marker) {
           markerCount++;
         }
         if (markerCount === 3) {
-          console.log('win on ' + prop + ' ' + i);
           winningLines.push(prop + i);
         }
       }
@@ -512,24 +490,24 @@ function startGameButton() {
       isPlayersTurn = false;
     }
 
-    console.log('The game has begun');
-
 
     var settingsBox = document.getElementById('settings-box');
     var settingsOverlay = document.getElementById('settings-overlay');
     var settingsButton = document.getElementById('settings-btn');
 
-    // addClass(settingsOverlay, 'blur');
+
     addClass(settingsButton, 'visible');
-
-    // addClass(settingsBox, 'move-settings');
-    // settingsBox.className += ' move-settings';
-    // settingsOverlay.className += ' blur';
-    // settingsButton.className += ' visible';
-
-  //   window.setTimeout(function () {
-  //   settingsBox.className += ' remove-box';
-  // }, 600);
+    console.log(playerMarkerNextTurn);
+    if (playerMarkerNextTurn === 'x') {
+      console.log('dude!');
+      playerMarker = 'x';
+      AIMarker = 'o';
+    } else {
+      playerMarker = 'o';
+      AIMarker = 'x';
+    }
+    console.log(playerMarkerNextTurn);
+    console.log(playerMarker);
 
     gameInProgress = true;
     gameTurn();
@@ -542,8 +520,7 @@ function startGameButton() {
 
 
 
-// game turn:
-
+// game turn outline:
 
 /** function outline
 
@@ -573,7 +550,7 @@ WHILE (victory == false):
 // this function will control the overall flow of the game
 function gameTurn() {
 
-  var currentMarker = isPlayersTurn ? playerMarker : AIMarker;
+  // var currentMarker = isPlayersTurn ? playerMarker : AIMarker;
   var AISpaceSelection;
 
   /** this will hold the retured value from checkForWin(), which is an
@@ -596,10 +573,7 @@ function gameTurn() {
     }
 
 
-  } else {
-    console.log('Game Over!');
   }
-
 
 }
 
@@ -617,6 +591,15 @@ function resetGame() {
   } else {
     isPlayersTurn = false;
   }
+
+  if (playerMarkerNextTurn === 'x') {
+    playerMarker = 'x';
+    AIMarker = 'o';
+  } else {
+    playerMarker = 'o';
+    AIMarker = 'x';
+  }
+
 
   gameInProgress = true;
   victory = false;
@@ -717,15 +700,18 @@ window.onload = function() {
     switch (e.target.id) {
 
       case 'x-marker-btn':
-        playerMarker = 'x';
-        AIMarker = 'o';
+
+        playerMarkerNextTurn = 'x';
+
         addClass(document.getElementById('x-marker-btn'), 'active-setting-btn');
         removeClass(document.getElementById('o-marker-btn'), 'active-setting-btn');
         break;
 
       case 'o-marker-btn':
-        playerMarker = 'o';
-        AIMarker = 'x';
+
+        playerMarkerNextTurn = 'o';
+
+
         addClass(document.getElementById('o-marker-btn'), 'active-setting-btn');
         removeClass(document.getElementById('x-marker-btn'), 'active-setting-btn');
         break;

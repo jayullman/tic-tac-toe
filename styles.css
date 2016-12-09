@@ -85,7 +85,10 @@ a:hover, a:active {
 	color: #fff;
 }
 
-
+p {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
 
 table {
   border-collapse: collapse;
@@ -107,6 +110,12 @@ button {
 	border: 1px solid white;
 	color: white;
 	outline: 0;
+}
+
+.btn {
+	border: 1px solid #fff;
+	cursor: default;
+	user-select: none;
 }
 
 .left-border {
@@ -190,22 +199,21 @@ button {
 }
 
 .settings-btn {
-	padding: .4em;
 	opacity: 0;
 	transition: opacity 1.5s;
 	display: table;
 	margin: 20px auto 0 auto;
+	width: 100px;
+	height: 35px;
+	border: 3px solid #fff;
+	line-height: 35px;
 }
 
 .visible {
 	opacity: 1;
 }
 
-.btn {
-	border: 1px solid #fff;
-	cursor: default;
-	user-select: none;
-}
+
 
 .btn:active {
 	color: #000;
@@ -228,6 +236,7 @@ button {
 	position: absolute;
 	z-index: 5;
 	transition: margin 1s cubic-bezier(.43,-.3,.53,.7);
+	transform: translateX(-10px);
 }
 
 .move-settings {
@@ -253,25 +262,23 @@ button {
 }
 
 .show-message {
-	margin-top: -200px;
+	margin-top: -225px;
+}
+
+.setting-btn {
+	width: 80px;
+	height: 25px;
+	margin-right: 10px;
+	margin-left: 10px;
 }
 
 .active-setting-btn {
-	border: 1px solid #f1f065;
+	border: 3px solid #8dfcaf;
 }
 
-/*.blur-settings-box {
-	position: absolute;
-	width: 200px;
-	height: 200px;
-	z-index: -1;
+.start-btn {
+	margin-top: 20px;
+	width: 100px;
+	height: 35px;
+	border: 3px solid #fff;
 }
-
-.blur {
-	z-index: 5;
-	background-color: rgba(0, 0, 0, 1);
-}
-
-.remove-box {
-	display: none;
-}*/
