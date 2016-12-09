@@ -612,7 +612,7 @@ VIEW
 function showMessage(msg, time) {
 
   // TODO: add messageDisplaying bool to stop play when a message is displayed
-  
+
   var messageBox = document.getElementById('message-box');
   messageBox.innerHTML = msg;
 
@@ -699,11 +699,20 @@ window.onload = function() {
   }
 
   function toggleSettings() {
+    var settingsButton = document.getElementById('settings-btn');
+
     // if the settingsBox does not have the move-box class:
     if (settingsBox.className.indexOf('move') < 0) {
       addClass(settingsBox, 'move-settings');
+
+      settingsButton.innerHTML = "Settings";
+
     } else {
       removeClass(settingsBox, 'move-settings');
+
+      // change text of settings button
+      settingsButton.innerHTML = "Resume";
+
     }
   }
 
