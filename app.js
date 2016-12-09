@@ -334,6 +334,20 @@ function AITurn() {
           return selectRandomElement([0, 2, 6, 8]);
         }
 
+    // prevent player from winning from this situation
+    if ( board[0].marker === null &&
+         board[1].marker === null &&
+         board[2].marker === playerMarker &&
+         board[3].marker === null &&
+         board[4].marker === AIMarker &&
+         board[5].marker === null &&
+         board[6].marker === playerMarker &&
+         board[7].marker === null &&
+         board[8].marker === null
+        ) {
+          return selectRandomElement([1, 7]);
+        }
+
     /**
       The AI will take the center squre on the first move or on the
       second move if the player has not yet taken it
