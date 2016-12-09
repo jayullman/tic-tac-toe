@@ -355,6 +355,7 @@ function AITurn() {
     //       return 4;
     //     }
 
+    // AI will select the center square on the second move if available
     for (var i = 0, playerMarkerCount = 0, nullCount = 0; i < board.length; i++) {
       if (board[i].marker === playerMarker) {
         playerMarkerCount++;
@@ -398,6 +399,15 @@ function AITurn() {
   */
 function placeMarker(space) {
 
+  function countEmptySpaces() {
+    for (var i = 0, nullCount = 0; i < board.length; i++) {
+      if (board[i].marker === null) {
+        nullCount++;
+      }
+    }
+    return nullCount;
+  }
+
   var lines = new Lines(board);
 
     // update the space with the appropriate marker, determined by who is
@@ -434,6 +444,11 @@ function placeMarker(space) {
       // TODO: send to view to show winning lines
       // run victory functions -> show winning lines, message to player, etc
     }
+    if (countEmptySpaces() === 0) {
+      console.log('draw!');
+      victory = true; // change to gameInProgress
+      // TODO: write draw conditions
+    }
 }
 
 // will test for win
@@ -469,6 +484,7 @@ CONTROLLER
 
 // when player presses start:
 function startGame() {
+
   if (document.getElementById('xMarker').checked) {
     playerMarker = 'x';
     AIMarker = 'o';
@@ -587,6 +603,25 @@ function resetGame() {
 /*************************
 VIEW
 *************************/
+
+/** This function will display a message to the user.
+    msg: a string that will be the message
+    time: the amount of time in ms to display the message, if undefined
+      message will stay indefinitely
+  */
+function showMessage(msg, time) {
+
+  // TODO: add messageDisplaying bool to stop play when a message is displayed
+  
+  var messageBox = document.getElementById('message-box');
+  messageBox.innerHTML = msg;
+
+  addClass(messageBox, 'show-message');
+  window.setTimeout(function() {
+    removeClass(messageBox, 'show-message');
+  }, time);
+
+}
 
 // function that adds a class
 function addClass(elem, style) {

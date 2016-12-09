@@ -239,6 +239,23 @@ button {
 
 }
 
+.message-box {
+	color: #fff;
+	line-height: 100px;
+	position: absolute;
+	width: 250px;
+	height: 100px;
+	background-color: rgba(0, 0, 0, .8);
+	left: 50%;
+	margin-top: -700px;
+	transform: translateX(-50%);
+	transition: margin 1s cubic-bezier(.43,-.3,.53,.7);
+}
+
+.show-message {
+	margin-top: -200px;
+}
+
 /*.blur-settings-box {
 	position: absolute;
 	width: 200px;
