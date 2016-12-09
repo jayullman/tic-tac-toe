@@ -250,6 +250,7 @@ button {
 
 .message-box {
 	color: #fff;
+	font-size: 2em;
 	line-height: 100px;
 	position: absolute;
 	width: 250px;
@@ -333,7 +334,7 @@ button {
 
 .begin-col2 {
 	top: 10%;
-	left: 85%
+	left: 82%
 }
 
 .end-line-vertical {
