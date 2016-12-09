@@ -329,12 +329,47 @@ function AITurn() {
          board[6].marker === null &&
          board[7].marker === null &&
          board[8].marker === null &&
-         board[4].marker === playerMarker
-        ) {
+         board[4].marker === playerMarker) {
           return selectRandomElement([0, 2, 6, 8]);
-        }
+      }
 
     // prevent player from winning from this situation
+    var filledSpots = 0;
+    for (var i = 0; i < board.length; i++) {
+      if (board[i].marker !== null) {
+        filledSpots++;
+      }
+    }
+    // defend against corner attacks at beginning of game
+    if (filledSpots === 3) {
+
+      if ( board[0].marker === null &&
+           board[1].marker === playerMarker &&
+           board[3].marker === playerMarker) {
+            return 0;
+        }
+
+      if ( board[1].marker === playerMarker &&
+           board[2].marker === null &&
+           board[5].marker === playerMarker) {
+            return 2;
+        }
+
+      if ( board[3].marker === playerMarker &&
+           board[6].marker === null &&
+           board[7].marker === playerMarker) {
+            return 6;
+        }
+
+      if ( board[5].marker === playerMarker &&
+           board[7].marker === playerMarker &&
+           board[8].marker === null) {
+            return 8;
+        }
+
+    }
+
+
     if ( board[0].marker === null &&
          board[1].marker === null &&
          board[2].marker === playerMarker &&
@@ -343,26 +378,11 @@ function AITurn() {
          board[5].marker === null &&
          board[6].marker === playerMarker &&
          board[7].marker === null &&
-         board[8].marker === null
-        ) {
+         board[8].marker === null) {
           return selectRandomElement([1, 7]);
-        }
+      }
 
-    /**
-      The AI will take the center squre on the first move or on the
-      second move if the player has not yet taken it
-      */
-    // if ( board[0].marker === null &&
-    //      board[1].marker === null &&
-    //      board[2].marker === null &&
-    //      board[3].marker === null &&
-    //      board[4].marker === null &&
-    //      board[5].marker === null &&
-    //      board[6].marker === null &&
-    //      board[7].marker === null &&
-    //      board[8].marker === null ) {
-    //       return 4;
-    //     }
+
 
     // AI will select the center square on the second move if available
     for (var i = 0, playerMarkerCount = 0, nullCount = 0; i < board.length; i++) {
